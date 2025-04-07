@@ -30,6 +30,8 @@ const Header: React.FC = () => {
             <NavLink href="/about">ABOUT</NavLink>
             <NavLink href="/tech-stack">TECH STACK</NavLink>
             <NavLink href="/blog">BLOG</NavLink>
+            <NavLink href="/experience">EXPRIENCE</NavLink>
+            <NavLink href="/projects">PROJECTS</NavLink>
             <NavLink href="/contact">CONTACT</NavLink>
             <Link href="/resume.pdf" target="_blank">
               <Button className="flex items-center gap-2 ml-4">
