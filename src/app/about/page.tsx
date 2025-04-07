@@ -8,14 +8,13 @@ import {
   FaShoppingCart,
   FaRocket,
   FaMobileAlt,
-  FaGamepad,
-  FaCamera,
-  FaMusic,
-  FaBookOpen,
+  FaCoffee,
+  FaHotTub,
 } from "react-icons/fa";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { FaDumbbell, FaPlane } from "react-icons/fa6";
 
 export default function AboutWithTechStack() {
   // AOSの初期化
@@ -50,7 +49,7 @@ export default function AboutWithTechStack() {
       id: 2,
       title: "ECサイト構築",
       description:
-        "Shopify、WooCommerce、Next.js Commerceなどを用いた最適なECソリューションを提案。決済システム連携からSEO対策まで、オンラインストアの立ち上げをトータルでサポートします。",
+        "Stripe、microCMS、Next.jsなどを用いた最適なECソリューションを提案。決済システム連携からSEO対策まで、オンラインストアの立ち上げをトータルでサポートします。",
       icon: <FaShoppingCart />,
       delay: 200,
     },
@@ -68,34 +67,33 @@ export default function AboutWithTechStack() {
   const interests = [
     {
       id: 1,
-      title: "ゲーム開発",
+      title: "海外旅行",
       description:
-        "休日はUnityを使った小規模なゲーム開発に取り組んでいます。ゲームメカニクスの設計が特に好きです。",
-      icon: <FaGamepad />,
+        "異なる国の文化や食べ物、風景を楽しむのが好きです。旅の中での予想外の出会いや発見が魅力です。",
+      icon: <FaPlane />,
       delay: 100,
     },
     {
       id: 2,
-      title: "写真撮影",
+      title: "サウナ",
       description:
-        "風景や街並みの写真撮影が趣味です。撮影した写真はWebデザインの参考にしています。",
-      icon: <FaCamera />,
+        "週末はサウナでじっくりと汗を流しています。ととのった後の開放感が何よりの楽しみです。",
+      icon: <FaHotTub />,
       delay: 200,
     },
     {
       id: 3,
-      title: "音楽制作",
+      title: "カフェ巡り",
       description:
-        "電子音楽の制作も趣味の一つです。プログラミングのスキルを活かしたジェネラティブミュージックに興味があります。",
-      icon: <FaMusic />,
+        "雰囲気の良いカフェを見つけるのが趣味です。特にプリンが美味しいお店を探すのが楽しみです。",
+      icon: <FaCoffee />,
       delay: 300,
     },
     {
       id: 4,
-      title: "技術書籍",
-      description:
-        "常に新しい技術トレンドをキャッチアップするため、技術書や開発ブログを読むことが日課です。",
-      icon: <FaBookOpen />,
+      title: "筋トレ",
+      description: "常に体を鍛え、リフレッシュしています。",
+      icon: <FaDumbbell />,
       delay: 400,
     },
   ];
@@ -313,7 +311,7 @@ export default function AboutWithTechStack() {
             <h2 className="text-4xl font-bold mb-2">INTERESTS</h2>
             <div className="w-24 h-1 bg-teal-400 mx-auto"></div>
             <p className="text-gray-300 mt-6 max-w-2xl mx-auto">
-              プログラミング以外にも様々な分野に興味を持ち、それらの経験をWeb制作にも活かしています。
+              プログラミング以外にも様々な分野に興味を持っています。
             </p>
           </div>
 
@@ -340,25 +338,19 @@ export default function AboutWithTechStack() {
 
           {/* 個人的なプロジェクト/趣味制作物のギャラリー */}
           <div className="mt-16" data-aos="fade-up">
-            <h3 className="text-2xl font-bold mb-8 text-center">
-              Personal Projects
-            </h3>
-
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="relative h-64 rounded-lg overflow-hidden group">
                 <Image
                   src="/images/project1.jpg"
-                  alt="Personal Project - Game Development"
+                  alt="Lyon"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   style={{ objectFit: "cover" }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                 <div className="absolute bottom-0 left-0 p-4">
-                  <h4 className="text-white font-bold mb-2">
-                    Puzzle Game Prototype
-                  </h4>
-                  <p className="text-gray-300 text-sm">Unity / C#</p>
+                  <h4 className="text-white font-bold mb-2">France Lyon</h4>
+                  <p className="text-gray-300 text-sm">ww</p>
                 </div>
                 <div className="absolute inset-0 bg-teal-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
@@ -373,10 +365,8 @@ export default function AboutWithTechStack() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                 <div className="absolute bottom-0 left-0 p-4">
-                  <h4 className="text-white font-bold mb-2">
-                    Urban Photography
-                  </h4>
-                  <p className="text-gray-300 text-sm">Tokyo Night Series</p>
+                  <h4 className="text-white font-bold mb-2">Sirha Lyon</h4>
+                  <p className="text-gray-300 text-sm">Expo</p>
                 </div>
                 <div className="absolute inset-0 bg-teal-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
@@ -392,11 +382,9 @@ export default function AboutWithTechStack() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                 <div className="absolute bottom-0 left-0 p-4">
                   <h4 className="text-white font-bold mb-2">
-                    Electronic Music EP
+                    Cafe Omotenashamoji
                   </h4>
-                  <p className="text-gray-300 text-sm">
-                    Ableton Live / Max for Live
-                  </p>
+                  <p className="text-gray-300 text-sm">Takadanobaba / Tokyo</p>
                 </div>
                 <div className="absolute inset-0 bg-teal-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
