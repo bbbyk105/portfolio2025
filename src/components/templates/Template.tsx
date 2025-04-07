@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import Button from "@/components/atoms/Button";
 import { FaArrowRight } from "react-icons/fa";
-import { BackgroundSpline } from "@/components/atoms/BackgroundSpline";
+import BackgroundSpline from "@/components/atoms/BackgroundSpline";
 
 export default function Template() {
   return (

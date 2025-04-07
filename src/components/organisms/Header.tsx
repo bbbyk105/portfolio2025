@@ -28,7 +28,7 @@ const Header: React.FC = () => {
           <nav className="hidden md:flex items-center space-x-2">
             <NavLink href="/">HOME</NavLink>
             <NavLink href="/about">ABOUT</NavLink>
-            <NavLink href="/tech-stack">TECH STACK</NavLink>
+            <NavLink href="/tech-stack">TECH</NavLink>
             <NavLink href="/blog">BLOG</NavLink>
             <NavLink href="/experience">EXPRIENCE</NavLink>
             <NavLink href="/projects">PROJECTS</NavLink>
