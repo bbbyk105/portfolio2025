@@ -1,8 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import { FaCalendarAlt, FaTag } from "react-icons/fa";
-import { getAllBlogs } from "@/lib/fetchMicroCMS";
+import { getAllBlogs } from "@/app/api/fetchMicroCMS";
 import Image from "next/image";
+import SectionHeader from "@/components/molecules/SectionHeader";
 
 export const metadata = {
   title: "Portfolio | Blog",
@@ -16,13 +17,12 @@ export default async function Blog() {
   return (
     <div className="container mx-auto px-4">
       <section className="py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-2">BLOG</h1>
-          <div className="w-20 h-1 bg-teal-400 mx-auto"></div>
-          <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
-            技術やデザインに関する知見や、制作過程で得た学びを共有しています。
-          </p>
-        </div>
+        <SectionHeader
+          title="BLOG"
+          subtitle="技術やデザインに関する知見や、制作過程で得た学びを共有しています。"
+          centered={true}
+          aosAnimation="fade-up"
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {blogs.map((post) => (
