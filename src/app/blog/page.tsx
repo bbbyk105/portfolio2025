@@ -19,7 +19,7 @@ export default async function Blog() {
       <section className="py-12">
         <SectionHeader
           title="BLOG"
-          subtitle="技術やデザインに関する知見や、制作過程で得た学びを共有しています。"
+          subtitle="技術やデザインに関する知見や、制作過程で得た学びを共有しています。その他、普段の仕事についても発信していきます。"
           centered={true}
           aosAnimation="fade-up"
         />
