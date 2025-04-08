@@ -1,3 +1,4 @@
+import SectionHeader from "@/components/molecules/SectionHeader";
 import React from "react";
 import { FaReact, FaNodeJs, FaGitAlt, FaFigma, FaAws } from "react-icons/fa";
 import {
@@ -41,21 +42,10 @@ export default function TechStack() {
         <div className="absolute bottom-0 left-1/3 w-72 h-72 bg-teal-400/5 rounded-full blur-3xl -z-10"></div>
 
         <div className="container mx-auto px-4">
-          <div
-            className="text-center mb-16"
-            data-aos="fade-up"
-            data-aos-delay="100"
-          >
-            <h2 className="text-5xl font-bold mb-2">TECH STACK</h2>
-            <div className="w-24 h-1 bg-teal-400 mx-auto"></div>
-            <p
-              className="text-gray-300 mt-6 max-w-2xl mx-auto"
-              data-aos="fade-up"
-              data-aos-delay="200"
-            >
-              日々のプロジェクトで使用している技術スタックです。常に最新のツールとベストプラクティスを取り入れるよう心がけています。
-            </p>
-          </div>
+          <SectionHeader
+            title="TECH STACK"
+            subtitle="日々のプロジェクトで使用している技術スタックです。常に最新のツールとベストプラクティスを取り入れるよう心がけています。"
+          />
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
             {technologies.map((tech, index) => (

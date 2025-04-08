@@ -1,6 +1,7 @@
 import React from "react";
 import { FaMapMarkerAlt, FaEnvelope } from "react-icons/fa";
 import ContactForm from "@/components/organisms/ContactForm";
+import SectionHeader from "@/components/molecules/SectionHeader";
 
 export const metadata = {
   title: "Portfolio | Contact",
@@ -12,11 +13,10 @@ export default function Contact() {
     <div className="container mx-auto px-4">
       <section className="py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-2">CONTACT</h1>
-          <div className="w-20 h-1 bg-teal-400 mx-auto"></div>
-          <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
-            お問い合わせやお仕事のご依頼は、以下のフォームまたは直接メールにてご連絡ください。
-          </p>
+          <SectionHeader
+            title="CONTACT"
+            subtitle="お問い合わせやお仕事のご依頼は、以下のフォームまたは直接メールにてご連絡ください。。"
+          />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">

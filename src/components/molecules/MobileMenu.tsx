@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FaFileDownload } from "react-icons/fa";
@@ -12,6 +12,16 @@ type MobileMenuProps = {
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+
+      return () => {
+        document.body.style.overflow = "";
+      };
+    }
+  }, [isOpen]);
 
   const menuItems = [
     { href: "/", label: "HOME" },
@@ -26,7 +36,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-95 flex flex-col">
+    <div className="fixed inset-0 z-[9999] bg-black flex flex-col">
       <div className="flex justify-end p-4">
         <button onClick={onClose} className="text-white p-2">
           <svg
@@ -46,7 +56,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
         </button>
       </div>
 
-      <div className="flex flex-col items-center justify-center flex-grow">
+      <div className="flex flex-col items-center justify-center flex-grow z-[10000]">
         <nav className="flex flex-col items-center space-y-6">
           {menuItems.map((item) => (
             <Link

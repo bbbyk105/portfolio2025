@@ -15,6 +15,7 @@ import {
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { FaDumbbell, FaPlane } from "react-icons/fa6";
+import SectionHeader from "@/components/molecules/SectionHeader";
 
 export default function AboutWithTechStack() {
   // AOSの初期化
@@ -106,15 +107,11 @@ export default function AboutWithTechStack() {
         <div className="absolute top-40 left-0 w-64 h-64 bg-teal-400/5 rounded-full blur-3xl -z-10"></div>
         <div className="absolute bottom-20 right-0 w-80 h-80 bg-teal-400/10 rounded-full blur-3xl -z-10"></div>
 
-        <div className="container mx-auto px-4">
-          <div
-            className="text-start mb-16"
-            data-aos="fade-right"
-            data-aos-delay="100"
-          >
-            <h1 className="text-5xl font-bold mb-2 text-center">ABOUT</h1>
-            <div className="w-24 h-1 bg-teal-400 mx-auto"></div>
-          </div>
+        <div className="container mx-auto px-4 py-12">
+          <SectionHeader
+            title="ABOUT"
+            subtitle="プロフィールです。私の技術や取り組みに対する姿勢をぜひご覧ください。"
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
             {/* プロフィール写真 - サイズ調整済み (5カラム分) */}
@@ -140,7 +137,7 @@ export default function AboutWithTechStack() {
             </div>
 
             {/* 自己紹介テキスト部分 (7カラム分) */}
-            <div className="md:col-span-7">
+            <div className="md:col-span-7 mt-12">
               <h2
                 className="text-3xl md:text-4xl font-bold mb-6"
                 data-aos="fade-up"
