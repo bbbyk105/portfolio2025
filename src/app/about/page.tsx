@@ -338,7 +338,7 @@ export default function AboutWithTechStack() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="relative h-64 rounded-lg overflow-hidden group">
                 <Image
-                  src="/images/project1.jpg"
+                  src="/images/project1.webp"
                   alt="Lyon"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
@@ -347,14 +347,17 @@ export default function AboutWithTechStack() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                 <div className="absolute bottom-0 left-0 p-4">
                   <h4 className="text-white font-bold mb-2">France Lyon</h4>
-                  <p className="text-gray-300 text-sm">ww</p>
+                  <p className="text-gray-300 text-sm">
+                    Vieux Lyon is famous for its Renaissance architecture and
+                    hidden passageways called traboules.
+                  </p>
                 </div>
                 <div className="absolute inset-0 bg-teal-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
 
               <div className="relative h-64 rounded-lg overflow-hidden group">
                 <Image
-                  src="/images/project2.jpg"
+                  src="/images/project2.webp"
                   alt="Personal Project - Photography"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
@@ -363,14 +366,17 @@ export default function AboutWithTechStack() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
                 <div className="absolute bottom-0 left-0 p-4">
                   <h4 className="text-white font-bold mb-2">Sirha Lyon</h4>
-                  <p className="text-gray-300 text-sm">Expo</p>
+                  <p className="text-gray-300 text-sm">
+                    Sirha Lyon is a major international trade fair for the
+                    foodservice industry, held every two years in Lyon, France.
+                  </p>
                 </div>
                 <div className="absolute inset-0 bg-teal-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
 
               <div className="relative h-64 rounded-lg overflow-hidden group">
                 <Image
-                  src="/images/project3.jpg"
+                  src="/images/project3.webp"
                   alt="Personal Project - Music Production"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
