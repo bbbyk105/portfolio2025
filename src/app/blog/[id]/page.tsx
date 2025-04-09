@@ -7,6 +7,7 @@ import { FaCalendarAlt, FaClock, FaArrowLeft } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaFacebook, FaLinkedin } from "react-icons/fa";
 import DOMPurify from "isomorphic-dompurify";
+import BlogContentStyles from "./BlogContentStyles";
 
 type Props = {
   params: { id: string };
@@ -49,8 +50,28 @@ export default async function BlogDetail({ params }: Props) {
 
   const readTime = calculateReadTime(blog.content);
 
+  // マークアップをmicroCMSスタイルに変換する前処理関数
+  const preProcessContent = (content: string) => {
+    // コードブロックの処理を改善
+    // microCMSのリッチエディタで出力されるコード形式を適切に処理
+    let processedContent = content;
+
+    // コードブロック内のスタイリングを保持
+    processedContent = processedContent.replace(
+      /<pre>([\s\S]*?)<\/pre>/g,
+      (match, codeContent) => {
+        // コードブロック内のインデントと空白を保持
+        return `<pre class="code-block"><code class="language-typescript">${codeContent}</code></pre>`;
+      }
+    );
+
+    return processedContent;
+  };
+
   // XSS攻撃を防ぐためにHTMLコンテンツをサニタイズ
-  const sanitizedContent = DOMPurify.sanitize(blog.content, {
+  const preprocessedContent = preProcessContent(blog.content);
+
+  const sanitizedContent = DOMPurify.sanitize(preprocessedContent, {
     USE_PROFILES: { html: true },
     ALLOWED_TAGS: [
       "h1",
@@ -94,7 +115,9 @@ export default async function BlogDetail({ params }: Props) {
       "style",
       "width",
       "height",
+      "data-language", // コード言語属性を追加
     ],
+    ADD_ATTR: ["target"], // リンクに target 属性を許可
     ALLOW_UNKNOWN_PROTOCOLS: false,
   });
 
@@ -113,10 +136,20 @@ export default async function BlogDetail({ params }: Props) {
           prose-blockquote:border-l-4 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-600
           prose-blockquote:pl-4 prose-blockquote:py-1 prose-blockquote:italic
           prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-400
-          prose-code:text-blue-600 dark:prose-code:text-blue-400 prose-code:bg-blue-50 dark:prose-code:bg-blue-900/30
+          
+          /* コードブロックスタイルを強化 */
+          prose-code:font-mono prose-code:text-blue-600 dark:prose-code:text-blue-400 
+          prose-code:bg-blue-50 dark:prose-code:bg-blue-900/30
           prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-          prose-pre:bg-gray-100 dark:prose-pre:bg-zinc-900 prose-pre:border prose-pre:border-gray-200 
-          dark:prose-pre:border-zinc-700 prose-pre:rounded-lg prose-pre:p-4"
+          
+          /* preタグのスタイリングを強化 */
+          prose-pre:bg-gray-900 dark:prose-pre:bg-zinc-900 
+          prose-pre:text-gray-100 dark:prose-pre:text-gray-100
+          prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-zinc-700 
+          prose-pre:rounded-lg prose-pre:p-4 prose-pre:overflow-x-auto
+          
+          /* preタグ内のcodeタグには背景色と余白を適用しない */
+          prose-pre:prose-code:bg-transparent prose-pre:prose-code:p-0 prose-pre:prose-code:text-current"
         dangerouslySetInnerHTML={{ __html: sanitizedContent }}
       />
     );
@@ -228,6 +261,9 @@ export default async function BlogDetail({ params }: Props) {
           </div>
         </article>
       </div>
+
+      {/* スタイルをクライアントコンポーネントで適用 */}
+      <BlogContentStyles />
     </div>
   );
 }
