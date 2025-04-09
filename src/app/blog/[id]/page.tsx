@@ -175,9 +175,9 @@ export default async function BlogDetail({ params }: Props) {
               <Image
                 src={blog.thumbnail.url}
                 alt={blog.title}
-                fill
-                className="object-cover"
-                priority
+                width={640}
+                height={360}
+                className="w-full h-full object-cover"
               />
             </div>
           )}
