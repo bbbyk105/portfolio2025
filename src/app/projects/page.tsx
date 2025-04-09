@@ -1,6 +1,6 @@
 import React from "react";
 import SectionHeader from "@/components/molecules/SectionHeader";
-import ProjectGrid from "@/components/organisms/project";
+import ProjectGrid from "@/components/organisms/Projectgrid";
 import { Projects } from "@/data/project";
 
 export const metadata = {
