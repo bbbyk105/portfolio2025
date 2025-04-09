@@ -27,6 +27,8 @@ const ProjectGrid: React.FC<ProjectGridProps> = ({
               <Image
                 src={project.thumbnail.url}
                 alt={project.title}
+                width={project.thumbnail.width}
+                height={project.thumbnail.height}
                 className="w-full h-full object-cover transition-transform hover:scale-110"
               />
             ) : (

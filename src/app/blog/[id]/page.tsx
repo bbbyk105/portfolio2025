@@ -52,7 +52,6 @@ export default async function BlogDetail({ params }: Props) {
   // XSS攻撃を防ぐためにHTMLコンテンツをサニタイズ
   const sanitizedContent = DOMPurify.sanitize(blog.content, {
     USE_PROFILES: { html: true },
-    // 許可するHTMLタグを指定
     ALLOWED_TAGS: [
       "h1",
       "h2",
@@ -83,7 +82,6 @@ export default async function BlogDetail({ params }: Props) {
       "div",
       "span",
     ],
-    // 許可する属性を指定
     ALLOWED_ATTR: [
       "href",
       "src",
@@ -97,13 +95,36 @@ export default async function BlogDetail({ params }: Props) {
       "width",
       "height",
     ],
-    // 安全なURLのみを許可
     ALLOW_UNKNOWN_PROTOCOLS: false,
   });
 
+  // SSRとクライアントサイドの両方でコンテンツを正しくレンダリングするための対応
+  const BlogContent = () => {
+    return (
+      <div
+        className="prose prose-lg max-w-none
+          dark:prose-invert
+          prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
+          prose-headings:border-b prose-headings:border-gray-200 dark:prose-headings:border-zinc-700 prose-headings:pb-2 prose-headings:mb-4
+          prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6
+          prose-h3:text-xl prose-h3:mt-8
+          prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed
+          prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+          prose-blockquote:border-l-4 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-600
+          prose-blockquote:pl-4 prose-blockquote:py-1 prose-blockquote:italic
+          prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-400
+          prose-code:text-blue-600 dark:prose-code:text-blue-400 prose-code:bg-blue-50 dark:prose-code:bg-blue-900/30
+          prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
+          prose-pre:bg-gray-100 dark:prose-pre:bg-zinc-900 prose-pre:border prose-pre:border-gray-200 
+          dark:prose-pre:border-zinc-700 prose-pre:rounded-lg prose-pre:p-4"
+        dangerouslySetInnerHTML={{ __html: sanitizedContent }}
+      />
+    );
+  };
+
   return (
     <div className="bg-gray-50 dark:bg-zinc-900 min-h-screen">
-      <div className="container mx-auto px-4 py-6 max-w-screen-md">
+      <div className="container mx-auto px-4 py-6 max-w-screen-lg">
         {/* 戻るリンク */}
         <div className="mb-6">
           <Link
@@ -115,7 +136,7 @@ export default async function BlogDetail({ params }: Props) {
           </Link>
         </div>
 
-        <article className="bg-white dark:bg-zinc-800 rounded-lg shadow-sm overflow-hidden">
+        <article className="bg-white dark:bg-zinc-800 rounded-lg shadow-lg overflow-hidden">
           {blog.thumbnail && (
             <div className="relative w-full aspect-[2/1]">
               <Image
@@ -139,7 +160,7 @@ export default async function BlogDetail({ params }: Props) {
             </div>
 
             {/* タイトル */}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-gray-100 leading-tight">
+            <h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100 leading-tight">
               {blog.title}
             </h1>
 
@@ -156,26 +177,9 @@ export default async function BlogDetail({ params }: Props) {
             </div>
 
             {/* 記事本文 - サニタイズされたコンテンツを使用 */}
-            <div
-              className="prose prose-lg max-w-none
-                dark:prose-invert
-                prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
-                prose-headings:border-b prose-headings:border-gray-200 dark:prose-headings:border-zinc-700 prose-headings:pb-2 prose-headings:mb-4
-                prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6
-                prose-h3:text-xl prose-h3:mt-8
-                prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed
-                prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
-                prose-blockquote:border-l-4 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-600
-                prose-blockquote:pl-4 prose-blockquote:py-1 prose-blockquote:italic
-                prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-400
-                prose-code:text-blue-600 dark:prose-code:text-blue-400 prose-code:bg-blue-50 dark:prose-code:bg-blue-900/30
-                prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-                prose-pre:bg-gray-100 dark:prose-pre:bg-zinc-900 prose-pre:border prose-pre:border-gray-200 
-                dark:prose-pre:border-zinc-700 prose-pre:rounded-lg prose-pre:p-4"
-              dangerouslySetInnerHTML={{ __html: sanitizedContent }}
-            />
+            <BlogContent />
 
-            {/* アクションボタン */}
+            {/* ソーシャルシェアボタン */}
             <div className="mt-12 pt-6 border-t border-gray-100 dark:border-zinc-700">
               <div className="flex items-center justify-between">
                 <div className="flex space-x-2">
@@ -183,11 +187,7 @@ export default async function BlogDetail({ params }: Props) {
                     href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
                       blog.title
                     )}&url=${encodeURIComponent(
-                      `${
-                        typeof window !== "undefined"
-                          ? window.location.href
-                          : ""
-                      }`
+                      typeof window !== "undefined" ? window.location.href : ""
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -197,11 +197,7 @@ export default async function BlogDetail({ params }: Props) {
                   </a>
                   <a
                     href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                      `${
-                        typeof window !== "undefined"
-                          ? window.location.href
-                          : ""
-                      }`
+                      typeof window !== "undefined" ? window.location.href : ""
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -211,11 +207,7 @@ export default async function BlogDetail({ params }: Props) {
                   </a>
                   <a
                     href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-                      `${
-                        typeof window !== "undefined"
-                          ? window.location.href
-                          : ""
-                      }`
+                      typeof window !== "undefined" ? window.location.href : ""
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"

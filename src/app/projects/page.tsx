@@ -1,14 +1,12 @@
 import React from "react";
 import SectionHeader from "@/components/molecules/SectionHeader";
-import ProjectGrid from "@/components/organisms/Projectgrid";
+import ProjectGrid from "@/components/organisms/ProjectGrid";
 import { Projects } from "@/data/project";
 
 export const metadata = {
   title: "Portfolio | Projects",
   description: "My portfolio of projects and client work",
 };
-
-// ダミーデータ
 
 export default function ProjectsPage() {
   return (

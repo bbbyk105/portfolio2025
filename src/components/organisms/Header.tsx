@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FaFileDownload } from "react-icons/fa";
-import Logo from "../atoms/Logo";
 import NavLink from "../molecules/NavLink";
 import Button from "../atoms/Button";
 import MobileMenu from "../molecules/MobileMenu";
@@ -22,9 +21,7 @@ const Header: React.FC = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black border-b border-gray-800">
       <div className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          <Logo />
-
+        <div className="flex justify-end items-center">
           <nav className="hidden md:flex items-center space-x-2">
             <NavLink href="/">HOME</NavLink>
             <NavLink href="/about">ABOUT</NavLink>
