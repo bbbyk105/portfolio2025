@@ -10,11 +10,12 @@ import DOMPurify from "isomorphic-dompurify";
 import BlogContentStyles from "./BlogContentStyles";
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ genre: string; name: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const blog = await getBlogById(params.id);
+  const blog = await getBlogById((await params).id);
 
   return {
     title: `${blog.title} | Portfolio Blog`,
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const data = await getAllBlogs(999);
+  const data = await getAllBlogs(10);
 
   return data.contents.map((blog) => ({
     id: blog.id,
@@ -31,7 +32,7 @@ export async function generateStaticParams() {
 }
 
 export default async function BlogDetail({ params }: Props) {
-  const blog = await getBlogById(params.id);
+  const blog = await getBlogById((await params).id);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@splinetool/react-spline": "^2.2.6",
+    "@splinetool/react-spline": "^4.0.0",
     "@uidotdev/usehooks": "^2.4.1",
     "aos": "^2.3.4",
     "isomorphic-dompurify": "^2.23.0",

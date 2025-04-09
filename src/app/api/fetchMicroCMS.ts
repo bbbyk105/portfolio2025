@@ -42,7 +42,7 @@ export async function getAllCategories() {
     const response = await client.get({
       endpoint: "categories",
       queries: {
-        limit: 100,
+        limit: 10,
       },
     });
     return response.contents;
