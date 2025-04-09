@@ -46,13 +46,6 @@ export default function Contact() {
                 </div>
               </div>
             </div>
-
-            <div className="mt-12">
-              <h2 className="text-2xl font-bold mb-6">FOLLOW ME</h2>
-              <div className="flex gap-4">
-                {/* Social icons can be added here */}
-              </div>
-            </div>
           </div>
         </div>
       </section>
