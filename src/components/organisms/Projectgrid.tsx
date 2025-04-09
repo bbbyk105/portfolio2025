@@ -29,7 +29,7 @@ const ProjectGrid: React.FC<ProjectGridProps> = ({
                 alt={project.title}
                 width={project.thumbnail.width}
                 height={project.thumbnail.height}
-                className="w-full h-full object-cover transition-transform hover:scale-110"
+                className="w-full h-full object-cover"
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center text-gray-600">
