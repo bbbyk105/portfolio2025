@@ -19,9 +19,19 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // ローカルストレージからテーマを読み込む
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
-    if (savedTheme) {
-      setTheme(savedTheme);
+    try {
+      const savedTheme = localStorage.getItem("theme") as Theme | null;
+      if (savedTheme && (savedTheme === "dark" || savedTheme === "light")) {
+        setTheme(savedTheme);
+      } else {
+        // デフォルトのテーマを設定し、明示的にlocalStorageに保存
+        localStorage.setItem("theme", "dark");
+      }
+    } catch (error) {
+      // localStorageが使用できない場合のフォールバック
+      console.error("LocalStorage is not accessible:", error);
+      // デフォルトのダークテーマを強制適用
+      document.documentElement.classList.add("dark");
     }
   }, []);
 
