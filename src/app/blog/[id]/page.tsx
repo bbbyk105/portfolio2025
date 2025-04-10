@@ -126,6 +126,7 @@ export default async function BlogDetail({ params }: Props) {
   const BlogContent = () => {
     return (
       <div
+        id="blog-content"
         className="prose prose-lg max-w-none
           dark:prose-invert
           prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
@@ -194,7 +195,7 @@ export default async function BlogDetail({ params }: Props) {
             </div>
 
             {/* タイトル */}
-            <h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100 leading-tight">
+            <h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100 leading-tight blog-title">
               {blog.title}
             </h1>
 

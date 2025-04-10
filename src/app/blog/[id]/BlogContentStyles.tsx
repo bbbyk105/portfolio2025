@@ -1,16 +1,34 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 // クライアントコンポーネントとしてグローバルスタイルを定義
 export default function BlogContentStyles() {
+  // クライアントサイドでのダークモード強制適用
+  useEffect(() => {
+    // document.querySelector('html')が存在するかチェック
+    const htmlElement = document.querySelector("html");
+    if (
+      htmlElement &&
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      htmlElement.classList.add("dark");
+    }
+
+    // ローカルストレージからダークモード設定を取得して適用
+    const isDarkMode = localStorage.getItem("darkMode") === "true";
+    if (isDarkMode && htmlElement) {
+      htmlElement.classList.add("dark");
+    }
+  }, []);
+
   return (
     <style jsx global>{`
       /* 基本的な記事スタイリング */
       .prose {
         font-size: 1rem !important;
         line-height: 1.8 !important;
-        color: #333 !important;
       }
 
       /* 見出しのスタイリング */
@@ -20,7 +38,6 @@ export default function BlogContentStyles() {
         margin-top: 2rem !important;
         margin-bottom: 1rem !important;
         line-height: 1.3 !important;
-        color: #111827 !important;
       }
 
       .prose h2 {
@@ -30,7 +47,10 @@ export default function BlogContentStyles() {
         margin-bottom: 0.75rem !important;
         padding-bottom: 0.3rem !important;
         border-bottom: 1px solid #e5e7eb !important;
-        color: #111827 !important;
+      }
+
+      .dark .prose h2 {
+        border-bottom-color: #374151 !important;
       }
 
       .prose h3 {
@@ -38,7 +58,40 @@ export default function BlogContentStyles() {
         font-weight: 600 !important;
         margin-top: 1.5rem !important;
         margin-bottom: 0.75rem !important;
+      }
+
+      /* Dark mode text colors - !important で強制 */
+      html.dark .prose h1,
+      html.dark .prose h2,
+      html.dark .prose h3,
+      html.dark .prose h4,
+      html.dark .prose h5,
+      html.dark .prose h6 {
+        color: #f3f4f6 !important;
+      }
+
+      html.dark .prose p,
+      html.dark .prose ul,
+      html.dark .prose ol,
+      html.dark .prose li {
+        color: #d1d5db !important;
+      }
+
+      /* Light mode text colors */
+      .prose h1,
+      .prose h2,
+      .prose h3,
+      .prose h4,
+      .prose h5,
+      .prose h6 {
         color: #111827 !important;
+      }
+
+      .prose p,
+      .prose ul,
+      .prose ol,
+      .prose li {
+        color: #374151 !important;
       }
 
       /* 段落のスタイリング */
@@ -46,7 +99,6 @@ export default function BlogContentStyles() {
         margin-top: 1rem !important;
         margin-bottom: 1rem !important;
         line-height: 1.8 !important;
-        color: #374151 !important;
       }
 
       /* リストのスタイリング */
@@ -55,7 +107,6 @@ export default function BlogContentStyles() {
         margin-top: 1rem !important;
         margin-bottom: 1rem !important;
         padding-left: 1.5rem !important;
-        color: #374151 !important;
       }
 
       .prose li {
@@ -136,6 +187,12 @@ export default function BlogContentStyles() {
           "Liberation Mono", "Courier New", monospace !important;
       }
 
+      /* Dark mode インラインコード */
+      html.dark .prose :not(pre) > code {
+        background-color: rgba(59, 130, 246, 0.15) !important;
+        color: #60a5fa !important;
+      }
+
       /* 引用のスタイル */
       .prose blockquote {
         border-left: 4px solid #e5e7eb !important;
@@ -145,39 +202,8 @@ export default function BlogContentStyles() {
         margin: 1.25rem 0 !important;
       }
 
-      /* ダークモード対応 */
-      .dark .prose {
-        color: #e5e7eb !important;
-      }
-
-      .dark .prose h1,
-      .dark .prose h2,
-      .dark .prose h3 {
-        color: #f3f4f6 !important;
-      }
-
-      .dark .prose p,
-      .dark .prose ul,
-      .dark .prose ol,
-      .dark .prose li {
-        color: #d1d5db !important;
-      }
-
-      .dark .prose h2 {
-        border-bottom-color: #374151 !important;
-      }
-
-      .dark .prose pre {
-        background-color: #1a1a1a !important;
-        border: 1px solid #374151 !important;
-      }
-
-      .dark .prose :not(pre) > code {
-        background-color: rgba(59, 130, 246, 0.15) !important;
-        color: #60a5fa !important;
-      }
-
-      .dark .prose blockquote {
+      /* Dark mode 引用 */
+      html.dark .prose blockquote {
         border-left-color: #4b5563 !important;
         color: #9ca3af !important;
       }
@@ -213,13 +239,38 @@ export default function BlogContentStyles() {
         outline-offset: 2px !important;
       }
 
-      /* 記事全体のコンテナスタイル強化 */
-      .bg-white.dark\\:bg-zinc-800 {
-        background-color: #ffffff !important;
+      /* カスタムID selector for blog content */
+      #blog-content.prose h1,
+      #blog-content.prose h2,
+      #blog-content.prose h3,
+      #blog-content.prose h4,
+      #blog-content.prose h5,
+      #blog-content.prose h6 {
+        color: #111827 !important;
       }
 
-      .dark .bg-white.dark\\:bg-zinc-800 {
-        background-color: #27272a !important;
+      #blog-content.prose p,
+      #blog-content.prose ul,
+      #blog-content.prose ol,
+      #blog-content.prose li {
+        color: #374151 !important;
+      }
+
+      /* Blog content dark mode */
+      html.dark #blog-content.prose h1,
+      html.dark #blog-content.prose h2,
+      html.dark #blog-content.prose h3,
+      html.dark #blog-content.prose h4,
+      html.dark #blog-content.prose h5,
+      html.dark #blog-content.prose h6 {
+        color: #f3f4f6 !important;
+      }
+
+      html.dark #blog-content.prose p,
+      html.dark #blog-content.prose ul,
+      html.dark #blog-content.prose ol,
+      html.dark #blog-content.prose li {
+        color: #d1d5db !important;
       }
 
       /* コンテナ背景色を強化 */
@@ -227,8 +278,29 @@ export default function BlogContentStyles() {
         background-color: #f3f4f6 !important;
       }
 
-      .dark .bg-gray-100.dark\\:bg-zinc-900 {
+      /* コンテナ背景色（ダークモード） */
+      html.dark .bg-gray-100.dark\\:bg-zinc-900 {
         background-color: #18181b !important;
+      }
+
+      /* 記事コンテナ（ライトモード） */
+      .bg-white.dark\\:bg-zinc-800 {
+        background-color: #ffffff !important;
+      }
+
+      /* 記事コンテナ（ダークモード） */
+      html.dark .bg-white.dark\\:bg-zinc-800 {
+        background-color: #27272a !important;
+      }
+
+      /* ダークモードでリンクを適切に表示 */
+      html.dark .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400 {
+        color: #9ca3af !important;
+      }
+
+      html.dark
+        .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400:hover {
+        color: #d1d5db !important;
       }
     `}</style>
   );
