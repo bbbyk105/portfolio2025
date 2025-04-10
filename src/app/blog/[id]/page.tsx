@@ -8,6 +8,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FaFacebook, FaLinkedin } from "react-icons/fa";
 import DOMPurify from "isomorphic-dompurify";
 import BlogContentStyles from "./BlogContentStyles";
+import BlogThemeToggle from "@/components/atoms/BlogThemeToggle";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -161,7 +162,7 @@ export default async function BlogDetail({ params }: Props) {
     <div className="bg-gray-100 dark:bg-zinc-900 min-h-screen">
       <div className="container mx-auto px-4 py-6 max-w-screen-lg">
         {/* 戻るリンク */}
-        <div className="mb-6">
+        <div className="flex items-center justify-between mb-6">
           <Link
             href="/blog"
             className="inline-flex items-center text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 text-sm font-medium transition-colors"
@@ -169,6 +170,9 @@ export default async function BlogDetail({ params }: Props) {
             <FaArrowLeft className="w-5 h-5" />
             <span className="ml-1">記事一覧に戻る</span>
           </Link>
+
+          {/* ダークモード切替ボタン - クライアントコンポーネント */}
+          <BlogThemeToggle />
         </div>
 
         <article className="bg-white dark:bg-zinc-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-zinc-700 dark-mode-element">
