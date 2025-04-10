@@ -159,7 +159,7 @@ export default async function BlogDetail({ params }: Props) {
   };
 
   return (
-    <div className="bg-gray-100 dark:bg-zinc-900 min-h-screen">
+    <div className=" dark:bg-zinc-900 min-h-screen">
       <div className="container mx-auto px-4 py-6 max-w-screen-lg">
         {/* 戻るリンク */}
         <div className="flex items-center justify-between mb-6">
