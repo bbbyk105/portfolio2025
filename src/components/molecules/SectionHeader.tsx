@@ -42,7 +42,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
       ></div>
       {subtitle && (
         <p
-          className="text-gray-300 mt-4 max-w-2xl mx-auto"
+          className="text-white mt-4 max-w-2xl mx-auto"
           data-aos="fade-up"
           data-aos-delay={aosDelay + 200}
         >
