@@ -35,3 +35,33 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.prose h1,
+.prose h2,
+.prose h3 {
+  color: var(--foreground) !important;
+  opacity: 1 !important;
+}
+
+.prose p,
+.prose li {
+  color: var(--foreground) !important;
+  opacity: 0.9 !important;
+}
+
+.prose strong {
+  color: var(--foreground) !important;
+  font-weight: 600 !important;
+}
+
+/* 見出しの特別なスタイリング */
+.prose h1.blog-title {
+  color: var(--foreground) !important;
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+}
+
+/* このセレクタでブログの見出しとテキストを強制的に表示 */
+[id^="blog-"] .prose * {
+  color: var(--foreground) !important;
+}
