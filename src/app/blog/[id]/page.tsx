@@ -162,14 +162,14 @@ export default async function BlogDetail({ params }: Props) {
         <div className="flex items-center justify-between mb-6">
           <Link
             href="/blog"
-            className="inline-flex items-center text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 text-sm font-medium transition-colors"
+            className="inline-flex items-center text-gray-400 hover:text-gray-300 dark:text-gray-400 dark:hover:text-gray-300 text-sm font-medium transition-colors"
           >
             <FaArrowLeft className="w-5 h-5" />
             <span className="ml-1">記事一覧に戻る</span>
           </Link>
         </div>
 
-        <article className="bg-zinc-800 dark:bg-zinc-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-zinc-700 dark-mode-element">
+        <article className="bg-zinc-800 dark:bg-zinc-800 rounded-lg shadow-lg overflow-hidden border border-zinc-700 dark:border-zinc-700 dark-mode-element">
           {blog.thumbnail && (
             <div className="relative w-full aspect-[2/1]">
               <Image
@@ -186,7 +186,7 @@ export default async function BlogDetail({ params }: Props) {
             {/* カテゴリータグ */}
             <div className="flex flex-wrap gap-2 mb-4">
               {blog.category && (
-                <span className="inline-block py-1 px-3 rounded-full text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
+                <span className="inline-block py-1 px-3 rounded-full text-xs font-medium bg-blue-900 text-blue-200 dark:bg-blue-900 dark:text-blue-200">
                   {blog.category.name}
                 </span>
               )}
@@ -198,7 +198,7 @@ export default async function BlogDetail({ params }: Props) {
             </h1>
 
             {/* メタ情報 (Zennスタイル) */}
-            <div className="flex items-center text-sm text-gray-600 dark:text-gray-400 pb-6 mb-6 border-b border-gray-200 dark:border-zinc-700">
+            <div className="flex items-center text-sm text-gray-400 dark:text-gray-400 pb-6 mb-6 border-b border-zinc-700 dark:border-zinc-700">
               <span className="flex items-center mr-4">
                 <FaCalendarAlt className="w-4 h-4" />
                 <span className="ml-1">{formatDate(blog.publishedAt)}</span>
@@ -213,11 +213,11 @@ export default async function BlogDetail({ params }: Props) {
             <BlogContent />
 
             {/* ソーシャルシェアボタン */}
-            <div className="mt-12 pt-6 border-t border-gray-200 dark:border-zinc-700">
+            <div className="mt-12 pt-6 border-t border-zinc-700 dark:border-zinc-700">
               <div className="flex items-center justify-between">
                 <Link
                   href="/blog"
-                  className="inline-flex items-center text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 text-sm font-medium transition-colors"
+                  className="inline-flex items-center text-gray-400 hover:text-gray-300 dark:text-gray-400 dark:hover:text-gray-300 text-sm font-medium transition-colors"
                 >
                   <FaArrowLeft className="w-5 h-5" />
                   <span className="ml-1">記事一覧に戻る</span>
