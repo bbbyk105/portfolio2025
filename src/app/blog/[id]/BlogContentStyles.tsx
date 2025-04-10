@@ -4,28 +4,18 @@ import React, { useEffect } from "react";
 
 // クライアントコンポーネントとしてグローバルスタイルを定義
 export default function BlogContentStyles() {
-  // クライアントサイドでのダークモード強制適用
+  // クライアントサイドでのダークモード設定
   useEffect(() => {
-    // Safariでの問題に対応するために、まずデフォルトでダークモードを適用
     const htmlElement = document.querySelector("html");
     if (htmlElement) {
-      // デフォルトでダークモードを適用
+      // まずデフォルトでダークモードを適用（サイト全体のデフォルト設定として）
       htmlElement.classList.add("dark");
 
-      // ローカルストレージからダークモード設定を確認
+      // ローカルストレージから設定を読み取って上書きする可能性
       const storedDarkMode = localStorage.getItem("darkMode");
 
-      // ストレージに明示的にライトモードの設定がある場合のみライトモードを適用
+      // 明示的にライトモードの設定がある場合のみライトモードを適用
       if (storedDarkMode === "false") {
-        htmlElement.classList.remove("dark");
-      }
-
-      // システム設定の確認は二次的に行う（ストレージの設定を優先）
-      else if (
-        storedDarkMode === null &&
-        window.matchMedia &&
-        !window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
         htmlElement.classList.remove("dark");
       }
     }
@@ -35,9 +25,11 @@ export default function BlogContentStyles() {
       const isDarkMode = localStorage.getItem("darkMode") === "true";
       const htmlElement = document.querySelector("html");
       if (htmlElement) {
-        if (isDarkMode) {
+        if (isDarkMode || localStorage.getItem("darkMode") === null) {
+          // デフォルトまたは明示的にダークモードの場合
           htmlElement.classList.add("dark");
         } else {
+          // 明示的にライトモードの場合のみ
           htmlElement.classList.remove("dark");
         }
       }
@@ -60,13 +52,14 @@ export default function BlogContentStyles() {
         line-height: 1.8 !important;
       }
 
-      /* 見出しのスタイリング */
+      /* 見出しのスタイリング - デフォルトで黒色にしてSafariの問題に対応 */
       .prose h1 {
         font-size: 2rem !important;
         font-weight: 700 !important;
         margin-top: 2rem !important;
         margin-bottom: 1rem !important;
         line-height: 1.3 !important;
+        color: #111827 !important;
       }
 
       .prose h2 {
@@ -76,10 +69,14 @@ export default function BlogContentStyles() {
         margin-bottom: 0.75rem !important;
         padding-bottom: 0.3rem !important;
         border-bottom: 1px solid #e5e7eb !important;
+        color: #111827 !important;
       }
 
-      .dark .prose h2 {
-        border-bottom-color: #374151 !important;
+      .prose h3,
+      .prose h4,
+      .prose h5,
+      .prose h6 {
+        color: #111827 !important;
       }
 
       .prose h3 {
@@ -89,7 +86,15 @@ export default function BlogContentStyles() {
         margin-bottom: 0.75rem !important;
       }
 
-      /* Dark mode text colors - !important で強制 */
+      /* テキストはデフォルトで黒色に設定 */
+      .prose p,
+      .prose ul,
+      .prose ol,
+      .prose li {
+        color: #374151 !important;
+      }
+
+      /* Dark mode で白色テキストをオーバーライド */
       html.dark .prose h1,
       html.dark .prose h2,
       html.dark .prose h3,
@@ -106,21 +111,8 @@ export default function BlogContentStyles() {
         color: #d1d5db !important;
       }
 
-      /* Light mode text colors - 強制的に適用 */
-      html:not(.dark) .prose h1,
-      html:not(.dark) .prose h2,
-      html:not(.dark) .prose h3,
-      html:not(.dark) .prose h4,
-      html:not(.dark) .prose h5,
-      html:not(.dark) .prose h6 {
-        color: #111827 !important;
-      }
-
-      html:not(.dark) .prose p,
-      html:not(.dark) .prose ul,
-      html:not(.dark) .prose ol,
-      html:not(.dark) .prose li {
-        color: #374151 !important;
+      html.dark .prose h2 {
+        border-bottom-color: #374151 !important;
       }
 
       /* 段落のスタイリング */
@@ -205,7 +197,7 @@ export default function BlogContentStyles() {
         color: #4ec9b0 !important;
       }
 
-      /* インラインコードのスタイル */
+      /* インラインコードのスタイル - デフォルトで青色に */
       .prose :not(pre) > code {
         background-color: rgba(96, 165, 250, 0.1) !important;
         color: #3b82f6 !important;
@@ -222,13 +214,7 @@ export default function BlogContentStyles() {
         color: #60a5fa !important;
       }
 
-      /* Light mode インラインコード - 明示的に指定 */
-      html:not(.dark) .prose :not(pre) > code {
-        background-color: rgba(96, 165, 250, 0.1) !important;
-        color: #3b82f6 !important;
-      }
-
-      /* 引用のスタイル */
+      /* 引用のスタイル - デフォルトでグレーに */
       .prose blockquote {
         border-left: 4px solid #e5e7eb !important;
         padding-left: 1rem !important;
@@ -241,12 +227,6 @@ export default function BlogContentStyles() {
       html.dark .prose blockquote {
         border-left-color: #4b5563 !important;
         color: #9ca3af !important;
-      }
-
-      /* Light mode 引用 - 明示的に指定 */
-      html:not(.dark) .prose blockquote {
-        border-left-color: #e5e7eb !important;
-        color: #6b7280 !important;
       }
 
       /* microCMSスタイルに近づけるための追加スタイル */
@@ -280,20 +260,20 @@ export default function BlogContentStyles() {
         outline-offset: 2px !important;
       }
 
-      /* カスタムID selector for blog content - ライトモード強制 */
-      html:not(.dark) #blog-content.prose h1,
-      html:not(.dark) #blog-content.prose h2,
-      html:not(.dark) #blog-content.prose h3,
-      html:not(.dark) #blog-content.prose h4,
-      html:not(.dark) #blog-content.prose h5,
-      html:not(.dark) #blog-content.prose h6 {
+      /* カスタムID selector for blog content - 明示的に文字色を指定 */
+      #blog-content.prose h1,
+      #blog-content.prose h2,
+      #blog-content.prose h3,
+      #blog-content.prose h4,
+      #blog-content.prose h5,
+      #blog-content.prose h6 {
         color: #111827 !important;
       }
 
-      html:not(.dark) #blog-content.prose p,
-      html:not(.dark) #blog-content.prose ul,
-      html:not(.dark) #blog-content.prose ol,
-      html:not(.dark) #blog-content.prose li {
+      #blog-content.prose p,
+      #blog-content.prose ul,
+      #blog-content.prose ol,
+      #blog-content.prose li {
         color: #374151 !important;
       }
 
@@ -314,8 +294,8 @@ export default function BlogContentStyles() {
         color: #d1d5db !important;
       }
 
-      /* コンテナ背景色をライトモードで強制 */
-      html:not(.dark) .bg-gray-100.dark\\:bg-zinc-900 {
+      /* コンテナ背景色 - デフォルトで明るい背景 */
+      .bg-gray-100.dark\\:bg-zinc-900 {
         background-color: #f3f4f6 !important;
       }
 
@@ -324,8 +304,8 @@ export default function BlogContentStyles() {
         background-color: #18181b !important;
       }
 
-      /* 記事コンテナ（ライトモード）- 強制 */
-      html:not(.dark) .bg-white.dark\\:bg-zinc-800 {
+      /* 記事コンテナ - デフォルトで白背景 */
+      .bg-white.dark\\:bg-zinc-800 {
         background-color: #ffffff !important;
       }
 
@@ -334,14 +314,12 @@ export default function BlogContentStyles() {
         background-color: #27272a !important;
       }
 
-      /* ライトモードでリンクを適切に表示 */
-      html:not(.dark)
-        .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400 {
+      /* リンク色 - デフォルトでグレー */
+      .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400 {
         color: #4b5563 !important;
       }
 
-      html:not(.dark)
-        .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400:hover {
+      .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400:hover {
         color: #111827 !important;
       }
 
