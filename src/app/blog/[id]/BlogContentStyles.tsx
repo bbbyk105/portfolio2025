@@ -6,84 +6,54 @@ import React, { useEffect } from "react";
 export default function BlogContentStyles() {
   // クライアントサイドでのダークモード強制適用
   useEffect(() => {
-    // ダークモードを検出して適用する関数
-    const applyDarkMode = () => {
-      const htmlElement = document.documentElement;
+    // Safariでの問題に対応するために、まずデフォルトでダークモードを適用
+    const htmlElement = document.querySelector("html");
+    if (htmlElement) {
+      // デフォルトでダークモードを適用
+      htmlElement.classList.add("dark");
 
-      // 優先順位: ローカルストレージ > システム設定
-      const isDarkMode =
-        localStorage.getItem("darkMode") === "true" ||
-        (window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches);
+      // ローカルストレージからダークモード設定を確認
+      const storedDarkMode = localStorage.getItem("darkMode");
 
-      if (isDarkMode) {
-        htmlElement.classList.add("dark");
-        document.body.classList.add("dark-mode-active");
-
-        // ブログコンテンツに明示的にダークモードクラスを適用
-        const blogContent = document.getElementById("blog-content");
-        if (blogContent) {
-          blogContent.classList.add("dark-content");
-        }
-
-        // 記事コンテナにもダークモードを適用
-        const articleElements = document.querySelectorAll("article");
-        articleElements.forEach((element) => {
-          element.classList.add("dark-content-container");
-        });
-      }
-    };
-
-    // 初期適用
-    applyDarkMode();
-
-    // システムのダークモード変更を監視
-    const darkModeMediaQuery = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    );
-    const handleChange = (e: MediaQueryListEvent) => {
-      if (e.matches) {
-        document.documentElement.classList.add("dark");
-        document.body.classList.add("dark-mode-active");
-      } else {
-        // ローカルストレージに明示的な設定がなければクラスを削除
-        if (localStorage.getItem("darkMode") !== "true") {
-          document.documentElement.classList.remove("dark");
-          document.body.classList.remove("dark-mode-active");
-        }
+      // ストレージに明示的にライトモードの設定がある場合のみライトモードを適用
+      if (storedDarkMode === "false") {
+        htmlElement.classList.remove("dark");
       }
 
-      // ダークモード変更時に記事内容も更新
-      applyDarkMode();
-    };
-
-    // イベントリスナーを追加
-    if (darkModeMediaQuery.addEventListener) {
-      darkModeMediaQuery.addEventListener("change", handleChange);
-      return () =>
-        darkModeMediaQuery.removeEventListener("change", handleChange);
+      // システム設定の確認は二次的に行う（ストレージの設定を優先）
+      else if (
+        storedDarkMode === null &&
+        window.matchMedia &&
+        !window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        htmlElement.classList.remove("dark");
+      }
     }
+
+    // ダークモード変更のイベントリスナーを設定
+    const updateDarkMode = () => {
+      const isDarkMode = localStorage.getItem("darkMode") === "true";
+      const htmlElement = document.querySelector("html");
+      if (htmlElement) {
+        if (isDarkMode) {
+          htmlElement.classList.add("dark");
+        } else {
+          htmlElement.classList.remove("dark");
+        }
+      }
+    };
+
+    // ストレージ変更イベントをリッスン
+    window.addEventListener("storage", updateDarkMode);
+
+    // クリーンアップ関数
+    return () => {
+      window.removeEventListener("storage", updateDarkMode);
+    };
   }, []);
 
   return (
     <style jsx global>{`
-      /* CSS変数の上書き */
-      html.dark {
-        --background: #0a0a0a !important;
-        --foreground: #ededed !important;
-      }
-
-      html.dark body {
-        background: var(--background) !important;
-        color: var(--foreground) !important;
-      }
-
-      /* ダークモード強制適用用クラス */
-      body.dark-mode-active {
-        background: var(--background) !important;
-        color: var(--foreground) !important;
-      }
-
       /* 基本的な記事スタイリング */
       .prose {
         font-size: 1rem !important;
@@ -108,9 +78,7 @@ export default function BlogContentStyles() {
         border-bottom: 1px solid #e5e7eb !important;
       }
 
-      .dark .prose h2,
-      html.dark .prose h2,
-      body.dark-mode-active .prose h2 {
+      .dark .prose h2 {
         border-bottom-color: #374151 !important;
       }
 
@@ -127,51 +95,31 @@ export default function BlogContentStyles() {
       html.dark .prose h3,
       html.dark .prose h4,
       html.dark .prose h5,
-      html.dark .prose h6,
-      body.dark-mode-active .prose h1,
-      body.dark-mode-active .prose h2,
-      body.dark-mode-active .prose h3,
-      body.dark-mode-active .prose h4,
-      body.dark-mode-active .prose h5,
-      body.dark-mode-active .prose h6,
-      .dark-content h1,
-      .dark-content h2,
-      .dark-content h3,
-      .dark-content h4,
-      .dark-content h5,
-      .dark-content h6 {
+      html.dark .prose h6 {
         color: #f3f4f6 !important;
       }
 
       html.dark .prose p,
       html.dark .prose ul,
       html.dark .prose ol,
-      html.dark .prose li,
-      body.dark-mode-active .prose p,
-      body.dark-mode-active .prose ul,
-      body.dark-mode-active .prose ol,
-      body.dark-mode-active .prose li,
-      .dark-content p,
-      .dark-content ul,
-      .dark-content ol,
-      .dark-content li {
+      html.dark .prose li {
         color: #d1d5db !important;
       }
 
-      /* Light mode text colors */
-      .prose h1,
-      .prose h2,
-      .prose h3,
-      .prose h4,
-      .prose h5,
-      .prose h6 {
+      /* Light mode text colors - 強制的に適用 */
+      html:not(.dark) .prose h1,
+      html:not(.dark) .prose h2,
+      html:not(.dark) .prose h3,
+      html:not(.dark) .prose h4,
+      html:not(.dark) .prose h5,
+      html:not(.dark) .prose h6 {
         color: #111827 !important;
       }
 
-      .prose p,
-      .prose ul,
-      .prose ol,
-      .prose li {
+      html:not(.dark) .prose p,
+      html:not(.dark) .prose ul,
+      html:not(.dark) .prose ol,
+      html:not(.dark) .prose li {
         color: #374151 !important;
       }
 
@@ -269,11 +217,15 @@ export default function BlogContentStyles() {
       }
 
       /* Dark mode インラインコード */
-      html.dark .prose :not(pre) > code,
-      body.dark-mode-active .prose :not(pre) > code,
-      .dark-content :not(pre) > code {
+      html.dark .prose :not(pre) > code {
         background-color: rgba(59, 130, 246, 0.15) !important;
         color: #60a5fa !important;
+      }
+
+      /* Light mode インラインコード - 明示的に指定 */
+      html:not(.dark) .prose :not(pre) > code {
+        background-color: rgba(96, 165, 250, 0.1) !important;
+        color: #3b82f6 !important;
       }
 
       /* 引用のスタイル */
@@ -286,11 +238,15 @@ export default function BlogContentStyles() {
       }
 
       /* Dark mode 引用 */
-      html.dark .prose blockquote,
-      body.dark-mode-active .prose blockquote,
-      .dark-content blockquote {
+      html.dark .prose blockquote {
         border-left-color: #4b5563 !important;
         color: #9ca3af !important;
+      }
+
+      /* Light mode 引用 - 明示的に指定 */
+      html:not(.dark) .prose blockquote {
+        border-left-color: #e5e7eb !important;
+        color: #6b7280 !important;
       }
 
       /* microCMSスタイルに近づけるための追加スタイル */
@@ -324,161 +280,79 @@ export default function BlogContentStyles() {
         outline-offset: 2px !important;
       }
 
-      /* カスタムID selector for blog content */
-      #blog-content.prose h1,
-      #blog-content.prose h2,
-      #blog-content.prose h3,
-      #blog-content.prose h4,
-      #blog-content.prose h5,
-      #blog-content.prose h6 {
+      /* カスタムID selector for blog content - ライトモード強制 */
+      html:not(.dark) #blog-content.prose h1,
+      html:not(.dark) #blog-content.prose h2,
+      html:not(.dark) #blog-content.prose h3,
+      html:not(.dark) #blog-content.prose h4,
+      html:not(.dark) #blog-content.prose h5,
+      html:not(.dark) #blog-content.prose h6 {
         color: #111827 !important;
       }
 
-      #blog-content.prose p,
-      #blog-content.prose ul,
-      #blog-content.prose ol,
-      #blog-content.prose li {
+      html:not(.dark) #blog-content.prose p,
+      html:not(.dark) #blog-content.prose ul,
+      html:not(.dark) #blog-content.prose ol,
+      html:not(.dark) #blog-content.prose li {
         color: #374151 !important;
       }
 
-      /* Blog content dark mode - 強化されたセレクタ */
+      /* Blog content dark mode */
       html.dark #blog-content.prose h1,
       html.dark #blog-content.prose h2,
       html.dark #blog-content.prose h3,
       html.dark #blog-content.prose h4,
       html.dark #blog-content.prose h5,
-      html.dark #blog-content.prose h6,
-      body.dark-mode-active #blog-content.prose h1,
-      body.dark-mode-active #blog-content.prose h2,
-      body.dark-mode-active #blog-content.prose h3,
-      body.dark-mode-active #blog-content.prose h4,
-      body.dark-mode-active #blog-content.prose h5,
-      body.dark-mode-active #blog-content.prose h6,
-      #blog-content.dark-content h1,
-      #blog-content.dark-content h2,
-      #blog-content.dark-content h3,
-      #blog-content.dark-content h4,
-      #blog-content.dark-content h5,
-      #blog-content.dark-content h6 {
+      html.dark #blog-content.prose h6 {
         color: #f3f4f6 !important;
       }
 
       html.dark #blog-content.prose p,
       html.dark #blog-content.prose ul,
       html.dark #blog-content.prose ol,
-      html.dark #blog-content.prose li,
-      body.dark-mode-active #blog-content.prose p,
-      body.dark-mode-active #blog-content.prose ul,
-      body.dark-mode-active #blog-content.prose ol,
-      body.dark-mode-active #blog-content.prose li,
-      #blog-content.dark-content p,
-      #blog-content.dark-content ul,
-      #blog-content.dark-content ol,
-      #blog-content.dark-content li {
+      html.dark #blog-content.prose li {
         color: #d1d5db !important;
       }
 
-      /* dangerouslySetInnerHTMLで挿入されたコンテンツに対する強力なセレクタ */
-      html.dark [id^="blog-"] .prose *,
-      body.dark-mode-active [id^="blog-"] .prose *,
-      .dark-content * {
-        color: var(--foreground) !important;
-      }
-
-      /* 条件付きセレクタの追加 - DOMPurifyでサニタイズされた要素にも適用 */
-      html.dark #blog-content > *,
-      body.dark-mode-active #blog-content > *,
-      .dark-mode-content > * {
-        color: var(--foreground) !important;
-      }
-
-      /* コンテナ背景色を強化 */
-      .bg-gray-100.dark\\:bg-zinc-900 {
+      /* コンテナ背景色をライトモードで強制 */
+      html:not(.dark) .bg-gray-100.dark\\:bg-zinc-900 {
         background-color: #f3f4f6 !important;
       }
 
       /* コンテナ背景色（ダークモード） */
-      html.dark .bg-gray-100.dark\\:bg-zinc-900,
-      body.dark-mode-active .bg-gray-100.dark\\:bg-zinc-900 {
+      html.dark .bg-gray-100.dark\\:bg-zinc-900 {
         background-color: #18181b !important;
       }
 
-      /* 記事コンテナ（ライトモード） */
-      .bg-white.dark\\:bg-zinc-800 {
+      /* 記事コンテナ（ライトモード）- 強制 */
+      html:not(.dark) .bg-white.dark\\:bg-zinc-800 {
         background-color: #ffffff !important;
       }
 
       /* 記事コンテナ（ダークモード） */
-      html.dark .bg-white.dark\\:bg-zinc-800,
-      body.dark-mode-active .bg-white.dark\\:bg-zinc-800,
-      .dark-content-container {
+      html.dark .bg-white.dark\\:bg-zinc-800 {
         background-color: #27272a !important;
       }
 
-      /* ダークモードでリンクを適切に表示 */
-      html.dark .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400,
-      body.dark-mode-active
+      /* ライトモードでリンクを適切に表示 */
+      html:not(.dark)
         .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400 {
+        color: #4b5563 !important;
+      }
+
+      html:not(.dark)
+        .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400:hover {
+        color: #111827 !important;
+      }
+
+      /* ダークモードでリンクを適切に表示 */
+      html.dark .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400 {
         color: #9ca3af !important;
       }
 
-      html.dark .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400:hover,
-      body.dark-mode-active
+      html.dark
         .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400:hover {
         color: #d1d5db !important;
-      }
-
-      /* 強制的なテキスト色の適用 - さらに強力なセレクタ */
-      html.dark .prose *,
-      html.dark #blog-content.prose *,
-      body.dark-mode-active .prose *,
-      body.dark-mode-active #blog-content.prose *,
-      .dark-content * {
-        color: var(--foreground) !important;
-      }
-
-      /* カスタムIDを持つ要素のための特別な処理 */
-      [id="blog-content"] .prose h1,
-      [id="blog-content"] .prose h2,
-      [id="blog-content"] .prose h3 {
-        color: var(--foreground) !important;
-      }
-
-      /* microCMSコンテンツに対するダークモード強制適用 */
-      html.dark .prose h1.blog-title,
-      body.dark-mode-active .prose h1.blog-title {
-        color: var(--foreground) !important;
-      }
-
-      /* ダークモード強制適用のためのユーティリティクラス */
-      .dark-mode-element * {
-        color: var(--foreground) !important;
-      }
-
-      /* dangerouslySetInnerHTMLとDOMPurifyによる要素の強制スタイリング */
-      html.dark #blog-content div,
-      html.dark #blog-content span,
-      html.dark #blog-content p,
-      html.dark #blog-content h1,
-      html.dark #blog-content h2,
-      html.dark #blog-content h3,
-      html.dark #blog-content h4,
-      html.dark #blog-content h5,
-      html.dark #blog-content h6,
-      html.dark #blog-content ul,
-      html.dark #blog-content ol,
-      html.dark #blog-content li,
-      html.dark #blog-content blockquote,
-      html.dark #blog-content pre,
-      html.dark #blog-content code {
-        color: var(--foreground) !important;
-      }
-
-      /* プログレッシブエンハンスメントのための追加セレクタ */
-      html[class*="dark"] .prose *,
-      body[class*="dark-mode"] .prose *,
-      [class*="dark-content"] * {
-        color: var(--foreground) !important;
       }
     `}</style>
   );
