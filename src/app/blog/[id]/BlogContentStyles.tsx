@@ -8,14 +8,13 @@ export default function BlogContentStyles() {
   useEffect(() => {
     const htmlElement = document.querySelector("html");
     if (htmlElement) {
-      // まずデフォルトでダークモードを適用（サイト全体のデフォルト設定として）
-      htmlElement.classList.add("dark");
-
-      // ローカルストレージから設定を読み取って上書きする可能性
+      // ローカルストレージから設定を読み取って、ダークモードの有無を決定
       const storedDarkMode = localStorage.getItem("darkMode");
 
-      // 明示的にライトモードの設定がある場合のみライトモードを適用
-      if (storedDarkMode === "false") {
+      // もしlocalStorageに設定がない場合、デフォルトでダークモードを適用
+      if (storedDarkMode === "true" || storedDarkMode === null) {
+        htmlElement.classList.add("dark");
+      } else {
         htmlElement.classList.remove("dark");
       }
     }
@@ -26,10 +25,8 @@ export default function BlogContentStyles() {
       const htmlElement = document.querySelector("html");
       if (htmlElement) {
         if (isDarkMode || localStorage.getItem("darkMode") === null) {
-          // デフォルトまたは明示的にダークモードの場合
           htmlElement.classList.add("dark");
         } else {
-          // 明示的にライトモードの場合のみ
           htmlElement.classList.remove("dark");
         }
       }
@@ -172,19 +169,10 @@ export default function BlogContentStyles() {
       .prose pre .string {
         color: #ce9178 !important;
       }
-      .prose pre .number {
-        color: #b5cea8 !important;
-      }
       .prose pre .function {
         color: #dcdcaa !important;
       }
-      .prose pre .operator {
-        color: #d4d4d4 !important;
-      }
       .prose pre .variable {
-        color: #9cdcfe !important;
-      }
-      .prose pre .property {
         color: #9cdcfe !important;
       }
       .prose pre .punctuation {
@@ -264,73 +252,19 @@ export default function BlogContentStyles() {
       #blog-content.prose h1,
       #blog-content.prose h2,
       #blog-content.prose h3,
-      #blog-content.prose h4,
-      #blog-content.prose h5,
-      #blog-content.prose h6 {
-        color: #111827 !important;
-      }
-
       #blog-content.prose p,
-      #blog-content.prose ul,
-      #blog-content.prose ol,
-      #blog-content.prose li {
-        color: #374151 !important;
+      #blog-content.prose li,
+      #blog-content.prose a,
+      #blog-content.prose strong,
+      #blog-content.prose em,
+      #blog-content.prose blockquote,
+      #blog-content.prose code {
+        color: var(--foreground) !important;
       }
 
-      /* Blog content dark mode */
-      html.dark #blog-content.prose h1,
-      html.dark #blog-content.prose h2,
-      html.dark #blog-content.prose h3,
-      html.dark #blog-content.prose h4,
-      html.dark #blog-content.prose h5,
-      html.dark #blog-content.prose h6 {
-        color: #f3f4f6 !important;
-      }
-
-      html.dark #blog-content.prose p,
-      html.dark #blog-content.prose ul,
-      html.dark #blog-content.prose ol,
-      html.dark #blog-content.prose li {
-        color: #d1d5db !important;
-      }
-
-      /* コンテナ背景色 - デフォルトで明るい背景 */
-      .bg-gray-100.dark\\:bg-zinc-900 {
-        background-color: #f3f4f6 !important;
-      }
-
-      /* コンテナ背景色（ダークモード） */
-      html.dark .bg-gray-100.dark\\:bg-zinc-900 {
-        background-color: #18181b !important;
-      }
-
-      /* 記事コンテナ - デフォルトで白背景 */
-      .bg-white.dark\\:bg-zinc-800 {
-        background-color: #ffffff !important;
-      }
-
-      /* 記事コンテナ（ダークモード） */
-      html.dark .bg-white.dark\\:bg-zinc-800 {
-        background-color: #27272a !important;
-      }
-
-      /* リンク色 - デフォルトでグレー */
-      .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400 {
-        color: #4b5563 !important;
-      }
-
-      .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400:hover {
-        color: #111827 !important;
-      }
-
-      /* ダークモードでリンクを適切に表示 */
-      html.dark .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400 {
-        color: #9ca3af !important;
-      }
-
-      html.dark
-        .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400:hover {
-        color: #d1d5db !important;
+      /* Dark mode適用のための追加セレクタ */
+      html.dark #blog-content.prose * {
+        color: var(--foreground) !important;
       }
     `}</style>
   );
