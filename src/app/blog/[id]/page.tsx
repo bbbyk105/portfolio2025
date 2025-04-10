@@ -4,8 +4,6 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { FaCalendarAlt, FaClock, FaArrowLeft } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
-import { FaFacebook, FaLinkedin } from "react-icons/fa";
 import DOMPurify from "isomorphic-dompurify";
 import BlogContentStyles from "./BlogContentStyles";
 
@@ -158,7 +156,7 @@ export default async function BlogDetail({ params }: Props) {
   };
 
   return (
-    <div className="bg-gray-100 dark:bg-zinc-900 min-h-screen">
+    <div className="bg-zinc-900 dark:bg-zinc-900 min-h-screen">
       <div className="container mx-auto px-4 py-6 max-w-screen-lg">
         {/* 戻るリンク */}
         <div className="flex items-center justify-between mb-6">
@@ -195,7 +193,7 @@ export default async function BlogDetail({ params }: Props) {
             </div>
 
             {/* タイトル */}
-            <h1 className="text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100 leading-tight blog-title">
+            <h1 className="text-3xl font-bold mb-4 text-gray-100 dark:text-gray-100 leading-tight blog-title">
               {blog.title}
             </h1>
 
@@ -217,40 +215,6 @@ export default async function BlogDetail({ params }: Props) {
             {/* ソーシャルシェアボタン */}
             <div className="mt-12 pt-6 border-t border-gray-200 dark:border-zinc-700">
               <div className="flex items-center justify-between">
-                <div className="flex space-x-2">
-                  <a
-                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                      blog.title
-                    )}&url=${encodeURIComponent(
-                      typeof window !== "undefined" ? window.location.href : ""
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 dark:bg-zinc-700 text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-zinc-600 transition-colors"
-                  >
-                    <FaXTwitter className="w-5 h-5" />
-                  </a>
-                  <a
-                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                      typeof window !== "undefined" ? window.location.href : ""
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 dark:bg-zinc-700 text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-zinc-600 transition-colors"
-                  >
-                    <FaFacebook className="w-5 h-5" />
-                  </a>
-                  <a
-                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-                      typeof window !== "undefined" ? window.location.href : ""
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 dark:bg-zinc-700 text-gray-600 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-zinc-600 transition-colors"
-                  >
-                    <FaLinkedin className="w-5 h-5" />
-                  </a>
-                </div>
                 <Link
                   href="/blog"
                   className="inline-flex items-center text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 text-sm font-medium transition-colors"
