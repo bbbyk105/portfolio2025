@@ -29,19 +29,37 @@ const Header: React.FC = () => {
         <div className="flex justify-end items-center">
           <div className="flex items-center">
             <nav className="hidden md:flex items-center space-x-2">
-              <NavLink href="/">HOME</NavLink>
-              <NavLink href="/about">ABOUT</NavLink>
-              <NavLink href="/tech-stack">TECH</NavLink>
-              <NavLink href="/blog">BLOG</NavLink>
-              <NavLink href="/experience">EXPRIENCE</NavLink>
-              <NavLink href="/projects">PROJECTS</NavLink>
-              <NavLink href="/contact">CONTACT</NavLink>
-              <Link href="/resume.pdf" target="_blank" suppressHydrationWarning>
-                <Button className="flex items-center gap-2 ml-4">
+              <NavLink href="/" className="text-xs">
+                HOME
+              </NavLink>
+              <NavLink href="/about" className="text-xs">
+                ABOUT
+              </NavLink>
+              <NavLink href="/tech-stack" className="text-xs">
+                TECH
+              </NavLink>
+              <NavLink href="/blog" className="text-xs">
+                BLOG
+              </NavLink>
+              <NavLink href="/experience" className="text-xs">
+                EXPRIENCE
+              </NavLink>
+              <NavLink href="/projects" className="text-xs">
+                PROJECTS
+              </NavLink>
+              <NavLink href="/contact" className="text-xs">
+                CONTACT
+              </NavLink>
+              <Link
+                href="/myProfile.pdf"
+                target="_blank"
+                suppressHydrationWarning
+              >
+                <Button className="flex items-center gap-2 ml-4 text-xs">
                   {mounted ? (
-                    <FaFileDownload />
+                    <FaFileDownload className="text-xs" />
                   ) : (
-                    <span className="w-4 h-4"></span>
+                    <span className="w-3 h-3"></span>
                   )}
                   <span>RESUME</span>
                 </Button>
@@ -59,7 +77,7 @@ const Header: React.FC = () => {
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                className="w-6 h-6"
+                className="w-5 h-5"
               >
                 <path
                   strokeLinecap="round"
