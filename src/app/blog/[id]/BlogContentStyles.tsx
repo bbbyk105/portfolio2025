@@ -4,44 +4,40 @@ import React, { useEffect } from "react";
 
 // クライアントコンポーネントとしてグローバルスタイルを定義
 export default function BlogContentStyles() {
-  // クライアントサイドでのダークモード設定の初期化
+  // クライアントサイドでのダークモード設定
   useEffect(() => {
     const htmlElement = document.querySelector("html");
     if (htmlElement) {
-      // ブログページ専用のダークモード設定を確認
-      const blogDarkMode = localStorage.getItem("blogDarkMode");
+      // ローカルストレージから設定を読み取って、ダークモードの有無を決定
+      const storedDarkMode = localStorage.getItem("darkMode");
 
-      // 設定がある場合はそれを適用
-      if (blogDarkMode === "true") {
+      // もしlocalStorageに設定がない場合、デフォルトでダークモードを適用
+      if (storedDarkMode === "true" || storedDarkMode === null) {
         htmlElement.classList.add("dark");
-      } else if (blogDarkMode === "false") {
-        htmlElement.classList.remove("dark");
       } else {
-        // 設定がない場合はデフォルトでダークモードを適用（推奨モード）
-        htmlElement.classList.add("dark");
-        localStorage.setItem("blogDarkMode", "true");
+        htmlElement.classList.remove("dark");
       }
     }
 
-    // ストレージ変更イベントのリスナー
-    const storageHandler = () => {
-      const blogDarkMode = localStorage.getItem("blogDarkMode");
+    // ダークモード変更のイベントリスナーを設定
+    const updateDarkMode = () => {
+      const isDarkMode = localStorage.getItem("darkMode") === "true";
       const htmlElement = document.querySelector("html");
-
       if (htmlElement) {
-        if (blogDarkMode === "true") {
+        if (isDarkMode || localStorage.getItem("darkMode") === null) {
           htmlElement.classList.add("dark");
-        } else if (blogDarkMode === "false") {
+        } else {
           htmlElement.classList.remove("dark");
         }
       }
     };
 
-    window.addEventListener("storage", storageHandler);
+    // ストレージ変更イベントをリッスン
+    window.addEventListener("storage", updateDarkMode);
 
-    // クリーンアップ
+    // クリーンアップ関数
     return () => {
-      window.removeEventListener("storage", storageHandler);
+      window.removeEventListener("storage", updateDarkMode);
     };
   }, []);
 
@@ -53,13 +49,14 @@ export default function BlogContentStyles() {
         line-height: 1.8 !important;
       }
 
-      /* 見出しのスタイリング */
+      /* 見出しのスタイリング - デフォルトで黒色にしてSafariの問題に対応 */
       .prose h1 {
         font-size: 2rem !important;
         font-weight: 700 !important;
         margin-top: 2rem !important;
         margin-bottom: 1rem !important;
         line-height: 1.3 !important;
+        color: #111827 !important;
       }
 
       .prose h2 {
@@ -69,10 +66,14 @@ export default function BlogContentStyles() {
         margin-bottom: 0.75rem !important;
         padding-bottom: 0.3rem !important;
         border-bottom: 1px solid #e5e7eb !important;
+        color: #111827 !important;
       }
 
-      .dark .prose h2 {
-        border-bottom-color: #374151 !important;
+      .prose h3,
+      .prose h4,
+      .prose h5,
+      .prose h6 {
+        color: #111827 !important;
       }
 
       .prose h3 {
@@ -82,24 +83,15 @@ export default function BlogContentStyles() {
         margin-bottom: 0.75rem !important;
       }
 
-      /* Light mode text colors */
-      html:not(.dark) .prose h1,
-      html:not(.dark) .prose h2,
-      html:not(.dark) .prose h3,
-      html:not(.dark) .prose h4,
-      html:not(.dark) .prose h5,
-      html:not(.dark) .prose h6 {
-        color: #111827 !important;
-      }
-
-      html:not(.dark) .prose p,
-      html:not(.dark) .prose ul,
-      html:not(.dark) .prose ol,
-      html:not(.dark) .prose li {
+      /* テキストはデフォルトで黒色に設定 */
+      .prose p,
+      .prose ul,
+      .prose ol,
+      .prose li {
         color: #374151 !important;
       }
 
-      /* Dark mode text colors */
+      /* Dark mode で白色テキストをオーバーライド */
       html.dark .prose h1,
       html.dark .prose h2,
       html.dark .prose h3,
@@ -114,6 +106,10 @@ export default function BlogContentStyles() {
       html.dark .prose ol,
       html.dark .prose li {
         color: #d1d5db !important;
+      }
+
+      html.dark .prose h2 {
+        border-bottom-color: #374151 !important;
       }
 
       /* 段落のスタイリング */
@@ -173,19 +169,10 @@ export default function BlogContentStyles() {
       .prose pre .string {
         color: #ce9178 !important;
       }
-      .prose pre .number {
-        color: #b5cea8 !important;
-      }
       .prose pre .function {
         color: #dcdcaa !important;
       }
-      .prose pre .operator {
-        color: #d4d4d4 !important;
-      }
       .prose pre .variable {
-        color: #9cdcfe !important;
-      }
-      .prose pre .property {
         color: #9cdcfe !important;
       }
       .prose pre .punctuation {
@@ -198,7 +185,7 @@ export default function BlogContentStyles() {
         color: #4ec9b0 !important;
       }
 
-      /* インラインコードのスタイル */
+      /* インラインコードのスタイル - デフォルトで青色に */
       .prose :not(pre) > code {
         background-color: rgba(96, 165, 250, 0.1) !important;
         color: #3b82f6 !important;
@@ -215,7 +202,7 @@ export default function BlogContentStyles() {
         color: #60a5fa !important;
       }
 
-      /* 引用のスタイル */
+      /* 引用のスタイル - デフォルトでグレーに */
       .prose blockquote {
         border-left: 4px solid #e5e7eb !important;
         padding-left: 1rem !important;
@@ -261,79 +248,23 @@ export default function BlogContentStyles() {
         outline-offset: 2px !important;
       }
 
-      /* カスタムID selector for blog content */
-      html:not(.dark) #blog-content.prose h1,
-      html:not(.dark) #blog-content.prose h2,
-      html:not(.dark) #blog-content.prose h3,
-      html:not(.dark) #blog-content.prose h4,
-      html:not(.dark) #blog-content.prose h5,
-      html:not(.dark) #blog-content.prose h6 {
-        color: #111827 !important;
+      /* カスタムID selector for blog content - 明示的に文字色を指定 */
+      #blog-content.prose h1,
+      #blog-content.prose h2,
+      #blog-content.prose h3,
+      #blog-content.prose p,
+      #blog-content.prose li,
+      #blog-content.prose a,
+      #blog-content.prose strong,
+      #blog-content.prose em,
+      #blog-content.prose blockquote,
+      #blog-content.prose code {
+        color: var(--foreground) !important;
       }
 
-      html:not(.dark) #blog-content.prose p,
-      html:not(.dark) #blog-content.prose ul,
-      html:not(.dark) #blog-content.prose ol,
-      html:not(.dark) #blog-content.prose li {
-        color: #374151 !important;
-      }
-
-      /* Blog content dark mode */
-      html.dark #blog-content.prose h1,
-      html.dark #blog-content.prose h2,
-      html.dark #blog-content.prose h3,
-      html.dark #blog-content.prose h4,
-      html.dark #blog-content.prose h5,
-      html.dark #blog-content.prose h6 {
-        color: #f3f4f6 !important;
-      }
-
-      html.dark #blog-content.prose p,
-      html.dark #blog-content.prose ul,
-      html.dark #blog-content.prose ol,
-      html.dark #blog-content.prose li {
-        color: #d1d5db !important;
-      }
-
-      /* コンテナ背景色を強化 */
-      html:not(.dark) .bg-gray-100.dark\\:bg-zinc-900 {
-        background-color: #f3f4f6 !important;
-      }
-
-      /* コンテナ背景色（ダークモード） */
-      html.dark .bg-gray-100.dark\\:bg-zinc-900 {
-        background-color: #18181b !important;
-      }
-
-      /* 記事コンテナ（ライトモード） */
-      html:not(.dark) .bg-white.dark\\:bg-zinc-800 {
-        background-color: #ffffff !important;
-      }
-
-      /* 記事コンテナ（ダークモード） */
-      html.dark .bg-white.dark\\:bg-zinc-800 {
-        background-color: #27272a !important;
-      }
-
-      /* リンク色（ライトモード） */
-      html:not(.dark)
-        .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400 {
-        color: #4b5563 !important;
-      }
-
-      html:not(.dark)
-        .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400:hover {
-        color: #111827 !important;
-      }
-
-      /* ダークモードでリンクを適切に表示 */
-      html.dark .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400 {
-        color: #9ca3af !important;
-      }
-
-      html.dark
-        .text-gray-600.hover\\:text-gray-900.dark\\:text-gray-400:hover {
-        color: #d1d5db !important;
+      /* Dark mode適用のための追加セレクタ */
+      html.dark #blog-content.prose * {
+        color: var(--foreground) !important;
       }
     `}</style>
   );
