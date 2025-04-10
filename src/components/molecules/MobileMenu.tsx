@@ -74,7 +74,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           ))}
 
           <Link
-            href="/resume.pdf"
+            href="/myProfile.pdf"
             target="_blank"
             className="flex items-center gap-2 text-teal-400 text-xl mt-8"
           >
