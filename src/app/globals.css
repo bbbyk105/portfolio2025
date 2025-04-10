@@ -30,12 +30,17 @@ html.dark {
   --foreground: #ededed;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+html.dark body {
+  background: var(--background) !important;
+  color: var(--foreground) !important;
 }
 
+body.dark-mode {
+  background: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+/* 通常コンテンツのカラー */
 .prose h1,
 .prose h2,
 .prose h3 {
@@ -63,5 +68,58 @@ body {
 
 /* このセレクタでブログの見出しとテキストを強制的に表示 */
 [id^="blog-"] .prose * {
+  color: var(--foreground) !important;
+}
+
+/* ブログコンテンツに対する強力なセレクタ */
+#blog-content.prose h1,
+#blog-content.prose h2,
+#blog-content.prose h3,
+#blog-content.prose p,
+#blog-content.prose li,
+#blog-content.prose a,
+#blog-content.prose strong,
+#blog-content.prose em,
+#blog-content.prose blockquote,
+#blog-content.prose code {
+  color: var(--foreground) !important;
+}
+
+/* ダークモード適用のための追加セレクタ */
+html.dark body .prose * {
+  color: var(--foreground) !important;
+}
+
+/* ダークモードコンテンツ用の強制クラス */
+.dark-content * {
+  color: var(--foreground) !important;
+}
+
+/* プログレッシブエンハンスメントのためのクラスベースの対策 */
+body.dark-mode-active .prose h1,
+body.dark-mode-active .prose h2,
+body.dark-mode-active .prose h3,
+body.dark-mode-active .prose h4,
+body.dark-mode-active .prose h5,
+body.dark-mode-active .prose h6 {
+  color: #f3f4f6 !important;
+}
+
+body.dark-mode-active .prose p,
+body.dark-mode-active .prose ul,
+body.dark-mode-active .prose ol,
+body.dark-mode-active .prose li {
+  color: #d1d5db !important;
+}
+
+/* dangerouslySetInnerHTMLで挿入されたコンテンツに対する強力なセレクタ */
+.dark-mode-content > h1,
+.dark-mode-content > h2,
+.dark-mode-content > h3,
+.dark-mode-content > p,
+.dark-mode-content > ul,
+.dark-mode-content > ol,
+.dark-mode-content > li,
+.dark-mode-content > blockquote {
   color: var(--foreground) !important;
 }

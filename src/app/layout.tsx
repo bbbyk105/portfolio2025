@@ -2,7 +2,6 @@ import { Inter } from "next/font/google";
 import Header from "@/components/organisms/Header";
 import Footer from "@/components/organisms/Footer";
 import "./globals.css";
-import ThemeFixer from "@/components/atoms/ThemeFixer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,10 +23,12 @@ export default function RootLayout({
   return (
     <html lang="ja" className="dark" suppressHydrationWarning>
       <body
-        className={`${inter.className} flex flex-col min-h-screen bg-black text-white dark:bg-black dark:text-white`}
+        className={`${inter.className} flex flex-col min-h-screen bg-black text-white dark:bg-black dark:text-white dark-mode`}
       >
-        <ThemeFixer />
-        <div id="theme-wrapper" className="flex flex-col min-h-screen">
+        <div
+          id="theme-wrapper"
+          className="flex flex-col min-h-screen dark:bg-black dark:text-white"
+        >
           <Header />
           <main className="flex-grow pt-24 pb-12">{children}</main>
           <Footer />

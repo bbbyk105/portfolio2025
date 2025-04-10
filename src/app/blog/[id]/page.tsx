@@ -127,7 +127,7 @@ export default async function BlogDetail({ params }: Props) {
     return (
       <div
         id="blog-content"
-        className="prose prose-lg max-w-none
+        className="prose prose-lg max-w-none dark-mode-content
           dark:prose-invert
           prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
           prose-headings:border-b prose-headings:border-gray-200 dark:prose-headings:border-zinc-700 prose-headings:pb-2 prose-headings:mb-4
@@ -171,7 +171,7 @@ export default async function BlogDetail({ params }: Props) {
           </Link>
         </div>
 
-        <article className="bg-white dark:bg-zinc-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-zinc-700">
+        <article className="bg-white dark:bg-zinc-800 rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-zinc-700 dark-mode-element">
           {blog.thumbnail && (
             <div className="relative w-full aspect-[2/1]">
               <Image
