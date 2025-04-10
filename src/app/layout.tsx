@@ -1,7 +1,6 @@
 import { Inter } from "next/font/google";
 import Header from "@/components/organisms/Header";
 import Footer from "@/components/organisms/Footer";
-import { ThemeProvider } from "@/context/ThemeContext";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,17 +21,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja" suppressHydrationWarning>
+    <html lang="ja" className="dark" suppressHydrationWarning>
       <body
         className={`${inter.className} flex flex-col min-h-screen bg-black text-white dark:bg-black dark:text-white`}
       >
-        <ThemeProvider>
-          <div id="theme-wrapper" className="flex flex-col min-h-screen">
-            <Header />
-            <main className="flex-grow pt-24 pb-12">{children}</main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+        <div id="theme-wrapper" className="flex flex-col min-h-screen">
+          <Header />
+          <main className="flex-grow pt-24 pb-12">{children}</main>
+          <Footer />
+        </div>
       </body>
     </html>
   );
