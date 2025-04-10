@@ -20,6 +20,7 @@ export default function BlogContentStyles() {
         margin-top: 2rem !important;
         margin-bottom: 1rem !important;
         line-height: 1.3 !important;
+        color: #111827 !important;
       }
 
       .prose h2 {
@@ -29,6 +30,7 @@ export default function BlogContentStyles() {
         margin-bottom: 0.75rem !important;
         padding-bottom: 0.3rem !important;
         border-bottom: 1px solid #e5e7eb !important;
+        color: #111827 !important;
       }
 
       .prose h3 {
@@ -36,6 +38,7 @@ export default function BlogContentStyles() {
         font-weight: 600 !important;
         margin-top: 1.5rem !important;
         margin-bottom: 0.75rem !important;
+        color: #111827 !important;
       }
 
       /* 段落のスタイリング */
@@ -43,6 +46,7 @@ export default function BlogContentStyles() {
         margin-top: 1rem !important;
         margin-bottom: 1rem !important;
         line-height: 1.8 !important;
+        color: #374151 !important;
       }
 
       /* リストのスタイリング */
@@ -51,6 +55,7 @@ export default function BlogContentStyles() {
         margin-top: 1rem !important;
         margin-bottom: 1rem !important;
         padding-left: 1.5rem !important;
+        color: #374151 !important;
       }
 
       .prose li {
@@ -71,6 +76,7 @@ export default function BlogContentStyles() {
         line-height: 1.7 !important;
         tab-size: 2 !important;
         margin: 1.25rem 0 !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) !important;
       }
 
       /* コードブロック内のコードのスタイル */
@@ -144,6 +150,19 @@ export default function BlogContentStyles() {
         color: #e5e7eb !important;
       }
 
+      .dark .prose h1,
+      .dark .prose h2,
+      .dark .prose h3 {
+        color: #f3f4f6 !important;
+      }
+
+      .dark .prose p,
+      .dark .prose ul,
+      .dark .prose ol,
+      .dark .prose li {
+        color: #d1d5db !important;
+      }
+
       .dark .prose h2 {
         border-bottom-color: #374151 !important;
       }
@@ -187,6 +206,30 @@ export default function BlogContentStyles() {
       .prose pre .punctuation {
         color: #d4d4d4 !important;
       } /* 句読点 - 白色 */
+
+      /* フォーカスされた要素の強調 */
+      .prose a:focus {
+        outline: 2px solid #3b82f6 !important;
+        outline-offset: 2px !important;
+      }
+
+      /* 記事全体のコンテナスタイル強化 */
+      .bg-white.dark\\:bg-zinc-800 {
+        background-color: #ffffff !important;
+      }
+
+      .dark .bg-white.dark\\:bg-zinc-800 {
+        background-color: #27272a !important;
+      }
+
+      /* コンテナ背景色を強化 */
+      .bg-gray-100.dark\\:bg-zinc-900 {
+        background-color: #f3f4f6 !important;
+      }
+
+      .dark .bg-gray-100.dark\\:bg-zinc-900 {
+        background-color: #18181b !important;
+      }
     `}</style>
   );
 }
