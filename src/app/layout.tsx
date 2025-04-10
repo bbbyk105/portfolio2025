@@ -22,14 +22,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ja">
+    <html lang="ja" suppressHydrationWarning>
       <body
-        className={`${inter.className} flex flex-col min-h-screen bg-black text-white`}
+        className={`${inter.className} flex flex-col min-h-screen bg-black text-white dark:bg-black dark:text-white`}
       >
         <ThemeProvider>
-          <Header />
-          <main className="flex-grow pt-24 pb-12">{children}</main>
-          <Footer />
+          <div id="theme-wrapper" className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow pt-24 pb-12">{children}</main>
+            <Footer />
+          </div>
         </ThemeProvider>
       </body>
     </html>
