@@ -32,6 +32,9 @@ export async function POST(request: NextRequest) {
         user: process.env.EMAIL_USER as string,
         pass: process.env.EMAIL_PASS as string,
       },
+      requireTLS: true, // TLSを要求する設定を追加
+      logger: true, // ログ出力を有効化
+      debug: true, // デバッグ情報を有効化
     });
 
     // 管理者宛てのメール設定 - シンプルなHTMLテンプレート
