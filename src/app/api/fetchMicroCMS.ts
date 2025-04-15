@@ -5,6 +5,7 @@ import { Blog, BlogResponse } from "@/types/blog";
 const client = createClient({
   serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN || "",
   apiKey: process.env.MICROCMS_API_KEY || "",
+  retry: true,
 });
 
 export async function getAllBlogs(limit = 10, offset = 0) {

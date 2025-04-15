@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { createTransport } from "nodemailer";
 
 // リクエストの型定義
 interface ContactFormData {
@@ -15,6 +15,9 @@ export async function POST(request: NextRequest) {
     const body = (await request.json()) as ContactFormData;
     const { name, email, subject, message } = body;
 
+    // デバッグ情報を出力
+    console.log("Form data received:", { name, email, subject });
+
     // 必須フィールドのバリデーション
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -23,21 +26,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // メール送信の設定
-    const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST as string,
-      port: parseInt(process.env.EMAIL_PORT as string, 10),
-      secure: process.env.EMAIL_SECURE === "true",
+    // Amazon SESのSMTP設定
+    const smtpEndpoint =
+      process.env.SMTP_ENDPOINT || "email-smtp.ap-northeast-1.amazonaws.com";
+    const port = 587;
+    const smtpUsername = process.env.SES_USER;
+    const smtpPassword = process.env.SES_PASSWORD;
+
+    // 重要: 検証済みのメールアドレスを使用
+    const fromAddress = "byakkokondo@gmail.com"; // あなたの検証済みメールアドレス
+
+    console.log("Using verified email address:", fromAddress);
+
+    // SMTPトランスポーターの作成
+    const smtp = createTransport({
+      host: smtpEndpoint,
+      port: port,
+      secure: false, // TLS接続
       auth: {
-        user: process.env.EMAIL_USER as string,
-        pass: process.env.EMAIL_PASS as string,
+        user: smtpUsername,
+        pass: smtpPassword,
       },
-      requireTLS: true, // TLSを要求する設定を追加
-      logger: true, // ログ出力を有効化
-      debug: true, // デバッグ情報を有効化
     });
 
-    // 管理者宛てのメール設定 - シンプルなHTMLテンプレート
+    // 管理者宛てのメール設定
     const adminTemplate = `
       <!DOCTYPE html>
       <html>
@@ -124,7 +136,7 @@ export async function POST(request: NextRequest) {
       </html>
     `;
 
-    // 自動返信用のメール設定 - シンプルなHTMLテンプレート
+    // 自動返信用のメール設定
     const autoReplyTemplate = `
       <!DOCTYPE html>
       <html>
@@ -228,32 +240,68 @@ export async function POST(request: NextRequest) {
       </html>
     `;
 
-    // メール送信オプション
-    const mailOptions = {
-      from: process.env.EMAIL_FROM as string,
-      to: "byakkokondo@gmail.com", // 受信先メールアドレス
+    // 管理者宛てのメールメッセージ
+    const adminMessage = {
+      from: fromAddress,
+      to: "byakkokondo@gmail.com", // 管理者のアドレス
       subject: `お問い合わせ: ${subject || "お問い合わせフォームから"}`,
       html: adminTemplate,
     };
 
-    // 自動返信用のメール設定
-    const autoReplyOptions = {
-      from: process.env.EMAIL_FROM as string,
-      to: email,
-      subject: "お問い合わせありがとうございます",
-      html: autoReplyTemplate,
-    };
+    console.log("Sending admin email...");
+    try {
+      // 管理者宛てメール送信
+      const adminResult = await smtp.sendMail(adminMessage);
+      console.log("管理者へのメール送信成功:", adminResult.messageId);
+    } catch (error: unknown) {
+      console.error("管理者へのメール送信エラー:", error);
+      throw new Error(
+        `メール送信エラー: ${
+          error instanceof Error ? error.message : "不明なエラー"
+        }`
+      );
+    }
 
-    // メール送信
-    await transporter.sendMail(mailOptions);
-    await transporter.sendMail(autoReplyOptions);
+    // 注意: サンドボックス環境では送信先も検証済みである必要がある
+    // フォームで入力されたメールアドレスが検証されていない場合は送信しない
+    if (email === "byakkokondo@gmail.com") {
+      // 自動返信用のメールメッセージ
+      const autoReplyMessage = {
+        from: fromAddress,
+        to: email, // 問い合わせた人のアドレス
+        subject: "お問い合わせありがとうございます",
+        html: autoReplyTemplate,
+      };
+
+      console.log("Sending auto-reply email...");
+      try {
+        // 自動返信メール送信
+        const autoReplyResult = await smtp.sendMail(autoReplyMessage);
+        console.log("自動返信メール送信成功:", autoReplyResult.messageId);
+      } catch (error: unknown) {
+        console.error("自動返信メール送信エラー:", error);
+        // 自動返信が失敗しても全体のプロセスは続行
+      }
+    } else {
+      console.log(
+        "スキップ: 検証されていないメールアドレスへの自動返信を送信しません:",
+        email
+      );
+    }
 
     // 正常なレスポンスを返す
-    return NextResponse.json({ success: true });
-  } catch (error) {
+    return NextResponse.json({
+      success: true,
+      message: "お問い合わせを受け付けました。ありがとうございます。",
+    });
+  } catch (error: unknown) {
     console.error("Contact API Error:", error);
+
     return NextResponse.json(
-      { error: "メール送信に失敗しました" },
+      {
+        error: "メール送信に失敗しました",
+        details: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 }
     );
   }
