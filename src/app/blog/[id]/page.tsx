@@ -1,19 +1,20 @@
+// /app/blog/[id]/page.tsx
 import React from "react";
-import { getBlogById, getAllBlogs } from "@/app/api/fetchMicroCMS";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { FaCalendarAlt, FaClock, FaArrowLeft } from "react-icons/fa";
-import DOMPurify from "isomorphic-dompurify";
 import BlogContentStyles from "./BlogContentStyles";
+import { ServerSanitizeComponent } from "./ServerSanitizeComponent";
+import { getAllBlogs, getBlogById } from "@/app/libs/microcms";
 
 type Props = {
-  params: Promise<{ id: string }>;
-  searchParams: Promise<{ genre: string; name: string }>;
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const blog = await getBlogById((await params).id);
+  const blog = await getBlogById(params.id);
 
   return {
     title: `${blog.title} | Portfolio Blog`,
@@ -30,9 +31,10 @@ export async function generateStaticParams() {
 }
 
 export default async function BlogDetail({ params }: Props) {
-  const blog = await getBlogById((await params).id);
+  const blog = await getBlogById(params.id);
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | undefined) => {
+    if (!dateString) return "No date";
     const date = new Date(dateString);
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
@@ -67,93 +69,7 @@ export default async function BlogDetail({ params }: Props) {
     return processedContent;
   };
 
-  // XSS攻撃を防ぐためにHTMLコンテンツをサニタイズ
   const preprocessedContent = preProcessContent(blog.content);
-
-  const sanitizedContent = DOMPurify.sanitize(preprocessedContent, {
-    USE_PROFILES: { html: true },
-    ALLOWED_TAGS: [
-      "h1",
-      "h2",
-      "h3",
-      "h4",
-      "h5",
-      "h6",
-      "p",
-      "a",
-      "ul",
-      "ol",
-      "li",
-      "blockquote",
-      "pre",
-      "code",
-      "em",
-      "strong",
-      "del",
-      "img",
-      "br",
-      "hr",
-      "table",
-      "thead",
-      "tbody",
-      "tr",
-      "th",
-      "td",
-      "div",
-      "span",
-    ],
-    ALLOWED_ATTR: [
-      "href",
-      "src",
-      "alt",
-      "title",
-      "class",
-      "id",
-      "target",
-      "rel",
-      "style",
-      "width",
-      "height",
-      "data-language", // コード言語属性を追加
-    ],
-    ADD_ATTR: ["target"], // リンクに target 属性を許可
-    ALLOW_UNKNOWN_PROTOCOLS: false,
-  });
-
-  // SSRとクライアントサイドの両方でコンテンツを正しくレンダリングするための対応
-  const BlogContent = () => {
-    return (
-      <div
-        id="blog-content"
-        className="prose prose-lg max-w-none dark-mode-content
-          dark:prose-invert
-          prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
-          prose-headings:border-b prose-headings:border-gray-200 dark:prose-headings:border-zinc-700 prose-headings:pb-2 prose-headings:mb-4
-          prose-h2:text-2xl prose-h2:mt-12 prose-h2:mb-6
-          prose-h3:text-xl prose-h3:mt-8
-          prose-p:text-gray-800 dark:prose-p:text-gray-300 prose-p:leading-relaxed
-          prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
-          prose-blockquote:border-l-4 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-600
-          prose-blockquote:pl-4 prose-blockquote:py-1 prose-blockquote:italic
-          prose-blockquote:text-gray-700 dark:prose-blockquote:text-gray-400
-          
-          /* コードブロックスタイルを強化 */
-          prose-code:font-mono prose-code:text-blue-600 dark:prose-code:text-blue-400 
-          prose-code:bg-blue-50 dark:prose-code:bg-blue-900/30
-          prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
-          
-          /* preタグのスタイリングを強化 */
-          prose-pre:bg-gray-900 dark:prose-pre:bg-zinc-900 
-          prose-pre:text-gray-100 dark:prose-pre:text-gray-100
-          prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-zinc-700 
-          prose-pre:rounded-lg prose-pre:p-4 prose-pre:overflow-x-auto
-          
-          /* preタグ内のcodeタグには背景色と余白を適用しない */
-          prose-pre:prose-code:bg-transparent prose-pre:prose-code:p-0 prose-pre:prose-code:text-current"
-        dangerouslySetInnerHTML={{ __html: sanitizedContent }}
-      />
-    );
-  };
 
   return (
     <div className="bg-zinc-900 dark:bg-zinc-900 min-h-screen">
@@ -209,8 +125,8 @@ export default async function BlogDetail({ params }: Props) {
               </span>
             </div>
 
-            {/* 記事本文 - サニタイズされたコンテンツを使用 */}
-            <BlogContent />
+            {/* 記事本文 - クライアントコンポーネントを使用 */}
+            <ServerSanitizeComponent content={preprocessedContent || ""} />
 
             {/* ソーシャルシェアボタン */}
             <div className="mt-12 pt-6 border-t border-zinc-700 dark:border-zinc-700">

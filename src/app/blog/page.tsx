@@ -1,9 +1,10 @@
+// /app/blog/page.tsx
 import React from "react";
 import Link from "next/link";
 import { FaCalendarAlt, FaTag } from "react-icons/fa";
-import { getAllBlogs } from "@/app/api/fetchMicroCMS";
 import Image from "next/image";
 import SectionHeader from "@/components/molecules/SectionHeader";
+import { getAllBlogs } from "../libs/microcms";
 
 export const metadata = {
   title: "Portfolio | Blog",
@@ -48,7 +49,10 @@ export default async function Blog() {
                   <div className="flex items-center text-sm text-gray-400 mb-2">
                     <span className="flex items-center">
                       <FaCalendarAlt className="mr-1" />
-                      {new Date(post.publishedAt).toISOString().split("T")[0]}
+                      {/* TypeScript エラー修正: undefined の可能性を考慮 */}
+                      {post.publishedAt
+                        ? new Date(post.publishedAt).toISOString().split("T")[0]
+                        : "No date"}
                     </span>
                     <span className="mx-2">•</span>
                     <span className="flex items-center">
