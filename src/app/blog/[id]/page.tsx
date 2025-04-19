@@ -1,4 +1,4 @@
-// /app/blog/[id]/page.tsx
+// 修正版
 import React from "react";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -8,13 +8,18 @@ import BlogContentStyles from "./BlogContentStyles";
 import { ServerSanitizeComponent } from "./ServerSanitizeComponent";
 import { getAllBlogs, getBlogById } from "@/app/libs/microcms";
 
-type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
+// Next.js 15の型定義に合わせる：両方のパラメータがPromiseである必要がある
+interface PageProps {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const blog = await getBlogById(params.id);
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  // paramsをawaitする
+  const { id } = await params;
+  const blog = await getBlogById(id);
 
   return {
     title: `${blog.title} | Portfolio Blog`,
@@ -30,8 +35,12 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function BlogDetail({ params }: Props) {
-  const blog = await getBlogById(params.id);
+export default async function BlogDetail({ params }: PageProps) {
+  // paramsをawaitする
+  const { id } = await params;
+  // searchParamsは使用していないので削除
+
+  const blog = await getBlogById(id);
 
   const formatDate = (dateString: string | undefined) => {
     if (!dateString) return "No date";
