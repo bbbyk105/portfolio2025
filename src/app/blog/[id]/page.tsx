@@ -1,4 +1,4 @@
-// 修正版
+export const revalidate = 3600;
 import React from "react";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -8,7 +8,6 @@ import BlogContentStyles from "./BlogContentStyles";
 import { ServerSanitizeComponent } from "./ServerSanitizeComponent";
 import { getAllBlogs, getBlogById } from "@/app/libs/microcms";
 
-// Next.js 15の型定義に合わせる：両方のパラメータがPromiseである必要がある
 interface PageProps {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;

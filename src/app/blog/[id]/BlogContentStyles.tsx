@@ -1,46 +1,5 @@
 "use client";
-
-import React, { useEffect } from "react";
-
-// クライアントコンポーネントとしてグローバルスタイルを定義
 export default function BlogContentStyles() {
-  // クライアントサイドでのダークモード設定
-  useEffect(() => {
-    const htmlElement = document.querySelector("html");
-    if (htmlElement) {
-      // ローカルストレージから設定を読み取って、ダークモードの有無を決定
-      const storedDarkMode = localStorage.getItem("darkMode");
-
-      // もしlocalStorageに設定がない場合、デフォルトでダークモードを適用
-      if (storedDarkMode === "true" || storedDarkMode === null) {
-        htmlElement.classList.add("dark");
-      } else {
-        htmlElement.classList.remove("dark");
-      }
-    }
-
-    // ダークモード変更のイベントリスナーを設定
-    const updateDarkMode = () => {
-      const isDarkMode = localStorage.getItem("darkMode") === "true";
-      const htmlElement = document.querySelector("html");
-      if (htmlElement) {
-        if (isDarkMode || localStorage.getItem("darkMode") === null) {
-          htmlElement.classList.add("dark");
-        } else {
-          htmlElement.classList.remove("dark");
-        }
-      }
-    };
-
-    // ストレージ変更イベントをリッスン
-    window.addEventListener("storage", updateDarkMode);
-
-    // クリーンアップ関数
-    return () => {
-      window.removeEventListener("storage", updateDarkMode);
-    };
-  }, []);
-
   return (
     <style jsx global>{`
       /* 基本的な記事スタイリング */
@@ -246,6 +205,19 @@ export default function BlogContentStyles() {
       .prose a:focus {
         outline: 2px solid #3b82f6 !important;
         outline-offset: 2px !important;
+      }
+      .prose ul {
+        list-style-type: disc !important;
+      }
+
+      .prose ol {
+        list-style-type: decimal !important;
+      }
+
+      /* リストマーカーの色を明示的に設定 */
+      .prose ul li::marker,
+      .prose ol li::marker {
+        color: currentColor !important;
       }
 
       /* カスタムID selector for blog content - 明示的に文字色を指定 */
