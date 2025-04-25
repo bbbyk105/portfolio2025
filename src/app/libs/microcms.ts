@@ -35,10 +35,14 @@ export const client = createClient({
 });
 
 // ブログ記事一覧を取得する関数
-export const getAllBlogs = async (limit = 100, queries?: MicroCMSQueries) => {
+export const getAllBlogs = async (limit = 10, queries?: MicroCMSQueries) => {
   return await client.getList<Blog>({
     endpoint: "blogs",
-    queries: { limit, ...queries },
+    queries: {
+      limit,
+      orders: "-publishedAt",
+      ...queries,
+    },
   });
 };
 
