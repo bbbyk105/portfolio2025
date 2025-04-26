@@ -1,0 +1,10 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://byakko-engineer.com
+
+# Sitemaps
+Sitemap: https://byakko-engineer.com/sitemap.xml
+Sitemap: https://byakko-engineer.com/server-sitemap.xml
