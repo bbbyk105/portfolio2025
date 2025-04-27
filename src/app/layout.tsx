@@ -3,6 +3,7 @@ import Header from "@/components/organisms/Header";
 import Footer from "@/components/organisms/Footer";
 import "./globals.css";
 import { Metadata, Viewport } from "next";
+import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -105,6 +106,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja" className="dark" suppressHydrationWarning>
+      <head>
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="2744c391-9f5a-4207-9767-964eae69bcb0"
+        />
+      </head>
       <body
         className={`${inter.className} flex flex-col min-h-screen bg-black text-white dark:bg-black dark:text-white dark-mode`}
       >
