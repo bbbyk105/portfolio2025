@@ -1,5 +1,5 @@
 import React from "react";
-import { FaMapMarkerAlt, FaEnvelope } from "react-icons/fa";
+import { FaEnvelope } from "react-icons/fa";
 import ContactForm from "@/components/organisms/ContactForm";
 import SectionHeader from "@/components/molecules/SectionHeader";
 
@@ -26,16 +26,6 @@ export default function Contact() {
             <h2 className="text-2xl font-bold mb-6">CONTACT INFO</h2>
 
             <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <div className="bg-gray-900 p-3 rounded-full">
-                  <FaMapMarkerAlt className="text-xl text-teal-400" />
-                </div>
-                <div>
-                  <h3 className="font-bold mb-1">Location</h3>
-                  <p className="text-gray-400">東京都新宿区下落合4-27-11</p>
-                </div>
-              </div>
-
               <div className="flex items-start gap-4">
                 <div className="bg-gray-900 p-3 rounded-full">
                   <FaEnvelope className="text-xl text-teal-400" />
