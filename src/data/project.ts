@@ -8,7 +8,7 @@ export const Projects: Project[] = [
       "Next.js、TypeScript、Tailwind CSS、microCMSを使用して構築したポートフォリオサイト",
     skills: ["Next.js", "TypeScript", "Tailwind CSS", "microCMS"],
     githubUrl: "https://github.com/bbbyk105/portfolio2025",
-    demoUrl: "https://your-portfolio.com",
+    demoUrl: "https://byakko-engineer.com",
     thumbnail: {
       url: "/images/portfolio.webp",
       width: 1200,
@@ -17,27 +17,27 @@ export const Projects: Project[] = [
   },
   {
     id: "2",
-    title: "byPay",
-    description:
-      "React、Next.js、MicroCMS、Stripeを使用したテンプレートECサイトWebサービス",
-    skills: ["React", "Next.js", "MicroCMS", "Stripe"],
-    githubUrl: "https://github.com/bbbyk105/byPay",
-    demoUrl: "https://by-pay.vercel.app/",
+    title: "聚楽苑 ECサイト",
+    description: "聚楽苑様の公式サイトを作成させていただきました。",
+    skills: ["React", "Next.js", "TailwindCSS", "Stripe"],
+    githubUrl: "https://github.com/bbbyk105/jurakuen",
+    demoUrl: "https://jurakuen.com/",
     thumbnail: {
-      url: "/images/bypay.webp",
+      url: "/images/jurakuen.webp",
       width: 1200,
       height: 675,
     },
   },
   {
     id: "3",
-    title: "Checkey",
-    description: "現在開発中。空き家やレンタルスペースを活用するためのサービス",
-    skills: ["Next.js", "TypeScript", "Route53", "Amplify"],
+    title: "天地星空 ECサイト",
+    description:
+      "三つ星レストラン「銀座鮨 おのでら Los Angels店」様にも採用された日本酒のサイトの作成をさせていただきました。",
+    skills: ["React", "Next.js", "TailwindCSS", "Stripe"],
     githubUrl: "https://github.com/yourusername/task-manager",
-    demoUrl: "https://www.checkey-226.com/",
+    demoUrl: "https://mtfuji-sake-aus.com/",
     thumbnail: {
-      url: "/images/checkey.webp",
+      url: "/images/amachi.jpg",
       width: 1200,
       height: 675,
     },
