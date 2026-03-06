@@ -26,7 +26,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const menuItems = [
     { href: "/", label: "HOME" },
     { href: "/about", label: "ABOUT" },
-    { href: "/tech-stack", label: "TECH STACK" },
     { href: "/projects", label: "PROJECTS" },
     { href: "/experience", label: "EXPERIENCE" },
     { href: "/blog", label: "BLOG" },

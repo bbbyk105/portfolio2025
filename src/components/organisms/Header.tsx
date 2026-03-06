@@ -35,9 +35,6 @@ const Header: React.FC = () => {
               <NavLink href="/about" className="text-xs">
                 ABOUT
               </NavLink>
-              <NavLink href="/tech-stack" className="text-xs">
-                TECH
-              </NavLink>
               <NavLink href="/blog" className="text-xs">
                 BLOG
               </NavLink>
