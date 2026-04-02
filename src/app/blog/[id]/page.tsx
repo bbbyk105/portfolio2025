@@ -4,7 +4,6 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { FaCalendarAlt, FaClock, FaArrowLeft } from "react-icons/fa";
-import BlogContentStyles from "./BlogContentStyles";
 import { ServerSanitizeComponent } from "./ServerSanitizeComponent";
 import { getAllBlogs, getBlogById } from "@/app/libs/microcms";
 
@@ -151,9 +150,6 @@ export default async function BlogDetail({ params }: PageProps) {
           </div>
         </article>
       </div>
-
-      {/* スタイルをクライアントコンポーネントで適用 */}
-      <BlogContentStyles />
     </div>
   );
 }

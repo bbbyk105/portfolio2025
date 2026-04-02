@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Project } from "@/types/experience";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { FaExternalLinkAlt } from "react-icons/fa";
 import Image from "next/image";
 
 type ProjectGridProps = {
@@ -64,19 +64,7 @@ const ProjectGrid: React.FC<ProjectGridProps> = ({
                   className="flex items-center gap-2 text-teal-400 hover:text-teal-300 transition-colors"
                 >
                   <FaExternalLinkAlt />
-                  <span>Demo</span>
-                </Link>
-              )}
-
-              {project.githubUrl && (
-                <Link
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-teal-400 hover:text-teal-300 transition-colors"
-                >
-                  <FaGithub />
-                  <span>GitHub</span>
+                  <span>サイトを見る</span>
                 </Link>
               )}
             </div>
